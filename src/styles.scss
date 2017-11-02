@@ -7,7 +7,7 @@ General styles
 
 body {
 	background-color: white;
-	background-image: image_url('bg.jpg');
+	background-image: url('assets/images/bg.jpg');
 	background-position: left top;
 	background-repeat: repeat;
 }
@@ -102,7 +102,7 @@ h3 {
 	color: #898989;
 	margin-top: 16px;
 	margin-bottom: 14px;
-	text-align: left;
+	text-align: center;
 	line-height: 1.7em;
 }
 
@@ -114,7 +114,7 @@ h4 {
 	color: #898989;
 	margin-top: 16px;
 	margin-bottom: 14px;
-	text-align: left;
+	text-align: center;
 	line-height: 1.7em;
 }
 
@@ -262,8 +262,7 @@ Navigation and logo styles
 		display: table;
 		table-layout: fixed;
 		float: none;
-		margin: 0 auto;
-	}
+}
 
 	.navbar-default .navbar-nav > .active > a, 
 	.navbar-default .navbar-nav > .active > a:hover, 
@@ -276,9 +275,14 @@ Navigation and logo styles
 
 
 /* ----------------------------------------------------
-Buttons styles
+Form amd Buttons styles
 ------------------------------------------------------- */
 
+.notification {
+	font-size: 0.8rem;
+	font-style: italic;
+	margin-left: 3rem;
+}
 
 .btn {
 	border-radius: 5px;
@@ -426,7 +430,7 @@ Collections page styles
 	display: inline-block;
 }
 
-.socials > li a, .portfolio-filter > li a {
+.portfolio-filter > li a {
 	background: none repeat scroll 0 0 #FFFFFF;
 	font-size: 1em;
 	font-weight: 400;
@@ -445,9 +449,7 @@ Collections page styles
 }
 
 .portfolio-filter > li a:hover,
-.portfolio-filter > li a.active,
-.socials > li a:hover,
-.socials > li a.active {
+.portfolio-filter > li a.active {
 	color: #898989;
 	background: #e0e0e0;
 	border: 2px solid #dadada;
@@ -752,26 +754,12 @@ Contact page styles
 	border: 2px solid #dadada;
 }
 
-label {
-	float: left;
-	text-align: left;
-	margin-right: 15px;
-	width: 100px;
-	padding-top: 5px;
-	font-size: 1em;
-	color: #4f4d47;
-}
-
 h6 {
 	font-size: 1em;
 	font-weight: 400;
 	color: #4f4d47;
-	margin-top: 100px;
-	text-align: left;
 	font-family: 'Oxygen', sans-serif;
 	line-height: 1.7em;
-	margin-left: 120px;
-	padding-bottom: 24px;
 }
 
 h6 span {
@@ -830,9 +818,7 @@ Footer
 	font-family: 'Oxygen', sans-serif;
 	font-size: 1.1em;
 	border-top: 1px solid #dddddd;
-	border-bottom: 1px solid #dddddd;
-	margin-top: 40px;
-	margin-bottom: 50px;
+	margin-top: 150px;
 }
 
 
@@ -891,12 +877,6 @@ Responsive styles
 	#contact-area input.submit-button {
 		margin-left: 0;
 	}
-
-
-	h6 {
-		margin-left: 0;
-	}
-
 	
 }
 
@@ -942,11 +922,6 @@ Responsive styles
 	#contact-area input.submit-button {
 		margin-left: 118px;
 	}
-
-	h6 {
-		margin-left: 116px;
-	}
-
 
 }
 
@@ -1000,10 +975,4 @@ Responsive styles
 	#contact-area input.submit-button {
 		margin-left: 50px;
 	}
-
-
-	h6 {
-		margin-left: 0;
-	}
-
 }

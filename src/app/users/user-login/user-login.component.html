@@ -1,0 +1,50 @@
+<div class="row justify-content-center">
+    <div class="col-6">
+        <!-- Signup form -->
+        <form [formGroup]="userForm"  *ngIf="newUser"  (ngSubmit)="signup()">
+            <p class="h5 text-center mb-4">New User Signup</p>
+
+            <div class="md-form">
+                <i class="fa fa-envelope prefix grey-text"></i>
+                <input class="form-control" type="email" id="email" formControlName="email" required mdbActive>
+                <label for="email">Your email</label>
+                <div *ngIf="formErrors.email" class="notification deep-orange-text">{{ formErrors.email }}</div>
+            </div>
+
+            <div class="md-form">
+                <i class="fa fa-lock prefix grey-text"></i>
+                <input type="password" id="password" class="form-control" formControlName="password" required mdbActive>
+                <label for="password">Your password</label>
+                  <p *ngIf="formErrors.password" class="notification deep-orange-text">{{ formErrors.password }}</p>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary waves-light" [disabled]="!userForm.valid" mdbRippleRadius>Submit</button>
+            </div>
+        </form>
+
+        <!-- Login form -->
+        <form [formGroup]="userForm"  *ngIf="!newUser"  (ngSubmit)="login()">
+            <p class="h5 text-center mb-4">User Login</p>
+
+            <div class="md-form">
+                <i class="fa fa-envelope prefix grey-text"></i>
+                <input class="form-control" type="email" id="email" formControlName="email" required mdbActive>
+                <label for="email">Your email</label>
+                  <div *ngIf="formErrors.email" class="notification deep-orange-text">{{ formErrors.email }}</div>
+            </div>
+
+            <div class="md-form">
+                <i class="fa fa-lock prefix grey-text"></i>
+                <input class="form-control" type="password" id="password" formControlName="password" required mdbActive>
+                <label for="password">Your password</label>
+                  <div *ngIf="formErrors.password" class="notification deep-orange-text">{{ formErrors.password }}</div>
+            </div>
+
+            <div class="text-center">
+                <button class="btn btn-default waves-light" type="submit" [disabled]="!userForm.valid" mdbRippleRadius>Login</button>
+            </div>
+        </form>
+        <!-- Login form -->
+    </div>
+</div>
