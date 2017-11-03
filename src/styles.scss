@@ -28,19 +28,6 @@ body {
   }
 }
 
-a {
-	color: #4f4d47;
-	text-decoration: none;
-	-webkit-transition: all .35s; 
-	transition: all .35s;
-}
-
-a:hover {
-	color: #dadada;	
-	text-decoration: underline;
-}
-
-
 .wrapper {
 	background: white;
 	margin: 70px auto;
@@ -111,10 +98,19 @@ h4 {
 	font-family: 'Oxygen', sans-serif;	
 	font-size: 1em;
 	font-weight: 400;
-	color: #898989;
+	color: #4f4d47 !important;
 	margin-top: 16px;
 	margin-bottom: 14px;
 	text-align: center;
+	line-height: 1.7em;
+}
+
+h5 {
+	font-size: 1.1em;
+	font-weight: 600;
+	color: #4f4d47;
+	text-align: center;
+	font-family: 'Oxygen', sans-serif;
 	line-height: 1.7em;
 }
 
@@ -147,6 +143,10 @@ Navigation and logo styles
 
 .brand {
 	display: none;
+}
+
+.dropdown.show .dropdown-menu {
+	opacity: 1 !important;
 }
 
 .navbar-default .navbar-brand {
@@ -363,6 +363,32 @@ Home page styles
 	display: inline;
 	font-weight: 400;
 }
+
+    
+/* ----------------------------------------------------
+Art page styles
+------------------------------------------------------- */
+
+
+.card .card-data {
+    background-color: #929FBA;
+    color: #fff;
+    text-align: center;
+    height: auto;
+    padding: 10px;
+}
+
+.card .card-data ul {
+    margin-bottom: 0;
+    font-size: .9rem;
+    padding: 0;
+}
+
+.card .card-data ul li, .card .card-review ul li {
+    display: inline;
+}
+
+
 
 
 /* ----------------------------------------------------
@@ -680,17 +706,6 @@ News page styles
 	margin-top: 14px;
 	margin-bottom: 20px;
 }
-
-h5 {
-	font-size: 1.1em;
-	font-weight: 600;
-	color: #4f4d47;
-	margin-top: 50px;
-	text-align: center;
-	font-family: 'Oxygen', sans-serif;
-	line-height: 1.7em;
-}
-
 
 h5 .date {
 	font-size: 0.9em;

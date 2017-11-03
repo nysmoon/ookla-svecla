@@ -15,6 +15,9 @@ const osRoutes: Routes = [
 		path: 'login',
 		component: UserLoginComponent
 	}, {
+		path: 'login/:request',
+		component: UserLoginComponent
+	}, {
 		path: 'profile',
 		component: UserProfileComponent
 	}, {

@@ -1,1 +1,31 @@
-<p> Art Works </p>
+<div class="row">
+	<div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let art of arts">
+		<!--Card-->
+		<div class="card">
+
+			<!--Card image-->
+			<div class="view overlay hm-white-slight hm-zoom">
+				<img [src]="art.imageUrl" class="img-fluid" alt="">
+				<a>
+					<div class="mask"></div>
+				</a>
+			</div>
+
+			<!--Card content-->
+			<div class="card-body">
+				<!--Title-->
+				<h4 class="card-title">{{ art.name }}</h4>
+				<!--Text-->
+				<p class="card-text">{{ art.description }}</p>
+			</div>
+			<!-- Card footer -->
+			<div class="card-data">
+				<ul>
+					<li><i class="fa fa-clock-o"></i> {{ art.dateCreated }}</li>
+				</ul>
+			</div>
+			<!-- Card footer -->
+		</div>
+		<!--/.Card-->
+	</div>
+</div>

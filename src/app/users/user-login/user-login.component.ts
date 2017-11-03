@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 
 import { ReactiveFormsModule, FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
@@ -11,7 +11,7 @@ import { ReactiveFormsModule, FormGroup, FormControl, FormBuilder, Validators } 
 export class UserLoginComponent implements OnInit {
 
 	userForm: FormGroup;
-	newUser = true; // to toggle login or signup form
+	userRequest: string; // to toggle login or signup form
 	passReset = false; // set to true when password reset is triggered
 	formErrors = {
 		'email': '',
@@ -30,14 +30,18 @@ export class UserLoginComponent implements OnInit {
 		}
 	};
 
-	constructor(private fb: FormBuilder, private auth: AuthService) { }
+	constructor(private fb: FormBuilder, private auth: AuthService, private route: ActivatedRoute) {
 
-	ngOnInit(): void {
-		this.buildForm();
+		route.params.subscribe(val => {
+			this.userRequest = this.route.snapshot.params['request'];
+			console.log(this.userRequest)
+		});
+		
 	}
 
-	toggleForm() {
-		this.newUser = !this.newUser;
+	ngOnInit() {
+
+		this.buildForm();
 	}
 
 	signup(): void {
@@ -46,6 +50,7 @@ export class UserLoginComponent implements OnInit {
 
 	login(): void {
 		this.auth.emailLogin(this.userForm.value['email'], this.userForm.value['password'])
+		console.log("User logged in!");
 	}
 
 	resetPassword() {
