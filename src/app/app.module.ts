@@ -16,6 +16,8 @@ import { ArtItemComponent } from './art/art-item.component';
 import { FooterComponent } from './footer/footer.component';
 import { NotFoundComponent } from './core/not-found/not-found.component';
 
+import { ArtService } from './art/art.service';
+
 import { AuthService } from './core/auth.service';
 import { AuthGuardService } from './core/auth-guard.service';
 
@@ -40,7 +42,8 @@ import { AuthGuardService } from './core/auth-guard.service';
   ],
   providers: [
     AuthService,
-    AuthGuardService
+    AuthGuardService,
+    ArtService
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   bootstrap: [AppComponent]

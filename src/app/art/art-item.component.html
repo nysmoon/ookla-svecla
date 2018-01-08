@@ -1,2 +1,24 @@
+<!--Card-->
+<div class="card">
 
-               
+	<!--Card image-->
+	<div class="view overlay hm-white-slight hm-zoom">
+		<a href="{{art.imageUrl}}" data-lightbox="art"  data-title="{{art.name}}"> <img [src]="art.imageUrl" class="img-fluid" alt="{{art.name}}"></a>
+	</div>
+
+	<!--Card content-->
+	<div class="card-body">
+		<!--Title-->
+		<h4 class="card-title">{{ art.name }}</h4>
+		<!--Text-->
+		<p class="card-text">{{ art.description }}</p>
+	</div>
+	<!-- Card footer -->
+	<div class="card-data">
+		<ul>
+			<li><i class="fa fa-clock-o"></i> {{ art.dateCreated }}</li>
+		</ul>
+	</div>
+	<!-- Card footer -->
+</div>
+		<!--/.Card-->

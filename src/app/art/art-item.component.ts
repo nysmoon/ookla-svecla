@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
+import { Art } from './art.model'
 
 @Component({
 	selector: 'os-art-item',
@@ -6,5 +8,7 @@ import { Component } from '@angular/core';
 })
 
 export class ArtItemComponent {
+
+	@Input() art: Art;
 
 }
