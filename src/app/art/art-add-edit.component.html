@@ -1,0 +1,29 @@
+<div class="row justify-content-center">
+    <div class="col-6">
+		<form [formGroup]="artForm" (ngSubmit)="onSubmit()">
+			<div class="form-group">
+				<label for="art-name">Art Name</label>
+				<input class="form-control" type="text" name="art-name" id="art-name" formControlName="art-name">
+			</div>
+
+			<div class="form-group">
+				<label for="art-description">Art Description</label>
+				<input class="form-control" type="text" name="art-description" id="art-description" formControlName="art-description">
+			</div>
+
+			<div class="form-group">
+				<label for="art-date">Date of Creation</label>
+				<mat-form-field>
+					<input matInput [matDatepicker]="myDatepicker">
+					<mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+					<mat-datepicker #myDatepicker></mat-datepicker>
+				</mat-form-field>
+			</div>
+
+			<div class="form-group">
+				<label for="art-file">Upload Art File</label>
+				<input class="form-control" class="float-right" type="file" name="art-file" id="art-file" formControlName="art-file">
+			</div>
+		</form>
+	</div>
+</div>

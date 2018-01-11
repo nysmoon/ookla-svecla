@@ -7,23 +7,22 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class AuthService {
 
-  token: string;
+  public email: string;
 
   constructor(
     private router: Router) {
   }
 
   isAuthenticated() {
-    return this.token != null;
-  }
 
-  getToken() {
+    var user = firebase.auth().currentUser;
 
-    firebase.auth().currentUser.getIdToken()
-      .then(
-          (token: string) => this.token = token
-        )
-      return this.token;
+    if (user) {
+      return true;
+    } else {
+      return false;
+    }
+
   }
 
   //// Email/Password Auth ////
@@ -33,20 +32,21 @@ export class AuthService {
       response => {
         this.router.navigate(['/'])
       }
-    )
+      )
     .catch(
       error => console.log(error)
       );
   }
 
   emailLogin(email: string, password: string) {
+
     firebase.auth().signInWithEmailAndPassword(email, password)
     .then(
       response => {
-        firebase.auth().currentUser.getIdToken()
-        .then(
-          (token: string) => this.token = token
-          )
+        // firebase.auth().currentUser.getIdToken()
+        // .then(
+        //   (token: string) => this.token = token
+        //   )
         this.router.navigate(['/'])
       }
       )
@@ -55,7 +55,6 @@ export class AuthService {
 
   signOut() {
     firebase.auth().signOut();
-    this.token = null;
   }
 
   // Sends email allowing user to reset password

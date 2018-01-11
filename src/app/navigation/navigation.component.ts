@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../core/auth.service';
+import { Router } from '@angular/router';
+import * as firebase from 'firebase/app';
 
 @Component({
 	selector: 'os-navigation',
@@ -8,15 +10,28 @@ import { AuthService } from '../core/auth.service';
 
 export class NavigationComponent implements OnInit {
 
-constructor(private auth: AuthService) { }
+	public isAuthenticated: boolean;
+	public email: string;
 
-ngOnInit() {
+	constructor(private auth: AuthService, private router: Router) { }
 
+	ngOnInit() {
 
-}
+		let self = this;
 
-onLogout() {
-	this.auth.signOut();
-}
+		this.isAuthenticated = this.auth.isAuthenticated();
+
+		firebase.auth().onAuthStateChanged(function(user) {
+			if (user) {
+				self.email = user.email;
+			} else {
+			}
+		});
+	}
+
+	onLogout() {
+		this.auth.signOut();
+		this.router.navigate(['']);
+	}
 
 }

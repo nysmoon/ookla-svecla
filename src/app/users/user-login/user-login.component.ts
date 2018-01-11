@@ -12,7 +12,7 @@ export class UserLoginComponent implements OnInit {
 
 	userForm: FormGroup;
 	userRequest: string; // to toggle login or signup form
-	passReset = false; // set to true when password reset is triggered
+	passReset = true; // set to true when password reset is triggered
 	formErrors = {
 		'email': '',
 		'password': ''
@@ -25,17 +25,12 @@ export class UserLoginComponent implements OnInit {
 		'password': {
 			'required': 'Password is required. ',
 			'pattern': 'Password must include at least one letter and one number. ',
-			'minlength': 'Password must be at least 4 characters long. ',
-			'maxlength': 'Password cannot be more than 40 characters long. ',
+			'minlength': 'Password must be at least 6 characters long. ',
+			'maxlength': 'Password cannot be more than 25 characters long. ',
 		}
 	};
 
-	constructor(private fb: FormBuilder, private auth: AuthService, private route: ActivatedRoute) {
-
-		route.params.subscribe(val => {
-			this.userRequest = this.route.snapshot.params['request'];
-			console.log(this.userRequest)
-		});
+	constructor(private formBuilder: FormBuilder, private auth: AuthService, private route: ActivatedRoute) {
 		
 	}
 
@@ -44,13 +39,9 @@ export class UserLoginComponent implements OnInit {
 		this.buildForm();
 	}
 
-	signup(): void {
-		this.auth.emailSignUp(this.userForm.value['email'], this.userForm.value['password'])
-	}
+	onSubmit(request) {
 
-	login(): void {
-		this.auth.emailLogin(this.userForm.value['email'], this.userForm.value['password'])
-		console.log("User logged in!");
+		this.auth.emailLogin(this.userForm.value['email'], this.userForm.value['password']);
 	}
 
 	resetPassword() {
@@ -59,18 +50,16 @@ export class UserLoginComponent implements OnInit {
 	}
 
 	buildForm(): void {
-		this.userForm = this.fb.group({
+		this.userForm = this.formBuilder.group({
 			'email': ['', [
-			Validators.required,
-			Validators.email
-			]
-			],
+				Validators.required,
+				Validators.email
+				]],
 			'password': ['', [
-			Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
-			Validators.minLength(6),
-			Validators.maxLength(25)
-			]
-			],
+				Validators.pattern('^[a-zA-Z0-9!@#$&()\\-`.+,/\"]*$'),
+				Validators.minLength(6),
+				Validators.maxLength(25)
+				]],
 		});
 
 		this.userForm.valueChanges.subscribe(data => this.onValueChanged(data));

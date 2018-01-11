@@ -1,9 +1,9 @@
 <div class="row justify-content-center">
     <div class="col-6">
-        <!-- Signup -->
-        <div *ngIf="userRequest == 'signup'">
-            <form [formGroup]="userForm" (ngSubmit)="signup()">
-                <h5 class="h5 text-center mb-4">New User Signup</h5>
+        <!-- Login -->
+            <form [formGroup]="userForm" (ngSubmit)="onSubmit(userRequest)">
+                <h5 class="h5 text-center mb-4" *ngIf="userRequest == 'signup'">New User Signup</h5>
+                <h5 class="h5 text-center mb-4" *ngIf="userRequest == 'login'">User Login</h5>
 
                 <div class="md-form">
                     <i class="fa fa-envelope prefix grey-text"></i>
@@ -23,33 +23,6 @@
                     <button type="submit" class="btn btn-primary waves-light" [disabled]="!userForm.valid" mdbRippleRadius>Submit</button>
                 </div>
             </form>
-        </div>
-
-        <!-- Login  -->
-        <div *ngIf="userRequest == 'login'">
-            <form [formGroup]="userForm" (ngSubmit)="login()">
-                <h4 class="h5 text-center mb-4">User Login</h4>
-
-                <div class="md-form">
-                    <i class="fa fa-envelope prefix grey-text"></i>
-                    <input class="form-control" type="email" id="email" formControlName="email" required mdbActive>
-                    <label for="email">Your email</label>
-                    <div *ngIf="formErrors.email" class="notification deep-orange-text">{{ formErrors.email }}</div>
-                </div>
-
-                <div class="md-form">
-                    <i class="fa fa-lock prefix grey-text"></i>
-                    <input class="form-control" type="password" id="password" formControlName="password" required mdbActive>
-                    <label for="password">Your password</label>
-                    <div *ngIf="formErrors.password" class="notification deep-orange-text">{{ formErrors.password }}</div>
-                </div>
-
-                <div class="text-center">
-                    <button class="btn btn-default waves-light" type="submit" [disabled]="!userForm.valid" mdbRippleRadius>Login</button>
-                </div>
-            </form>
-            <!-- Login form -->
-        </div>
-
+            <a [routerLink]="['/forgot-password']">Forgot Password</a>
     </div>
 </div>
