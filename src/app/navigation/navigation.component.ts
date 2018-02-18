@@ -19,12 +19,12 @@ export class NavigationComponent implements OnInit {
 
 		let self = this;
 
-		this.isAuthenticated = this.auth.isAuthenticated();
-
 		firebase.auth().onAuthStateChanged(function(user) {
 			if (user) {
 				self.email = user.email;
+				self.isAuthenticated = true;
 			} else {
+				self.isAuthenticated = false;
 			}
 		});
 	}

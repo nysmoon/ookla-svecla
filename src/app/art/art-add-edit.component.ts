@@ -24,6 +24,22 @@ export class ArtAddEditComponent implements OnInit {
 
 	}
 
+	onFileChange(event) {
+		let reader = new FileReader();
+		if(event.target.files && event.target.files.length > 0) {
+			let file = event.target.files[0];
+			reader.readAsDataURL(file);
+			reader.onload = () => {
+				console.log(file)
+				this.artForm.get('art-file').setValue(
+					file.name
+					// filename: file.name,
+					// filetype: file.type,
+					// value: reader.result.split(',')[1]
+				)
+			};
+		}
+	}
 
 	onSubmit() {
 		console.log(this.artForm);

@@ -56,7 +56,6 @@ export class UserLoginComponent implements OnInit {
 				Validators.email
 				]],
 			'password': ['', [
-				Validators.pattern('^[a-zA-Z0-9!@#$&()\\-`.+,/\"]*$'),
 				Validators.minLength(6),
 				Validators.maxLength(25)
 				]],

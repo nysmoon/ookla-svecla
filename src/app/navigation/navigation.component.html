@@ -1,4 +1,4 @@
-<h5 *ngIf="auth.isAuthenticated">You are logged in as {{ email }}</h5>
+<h5 *ngIf="isAuthenticated">You are logged in as {{ email }}</h5>
 <nav class="navbar navbar-expand-lg navbar-default" role="navigation">
 	<!-- Brand and toggle get grouped for better mobile display -->
 	<div class="navbar-header">
@@ -19,7 +19,7 @@
 			<li class='nav-item' routerLinkActive="active">
 				<a class="nav-link"  [routerLink]="['/art']"><i class="fa fa-paint-brush" aria-hidden="true"></i> Art</a>
 			</li>
-			<li class='nav-item' routerLinkActive="active" *ngIf="auth.isAuthenticated">
+			<li class='nav-item' routerLinkActive="active" *ngIf="isAuthenticated">
 				<a class="nav-link" (click)="onLogout()"><i class="fa fa-user" aria-hidden="true"></i> Log Out</a>
 			</li>
 	</ul>
