@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
+import * as firebase from 'firebase/app';
 
 @Component({
 	selector: 'os-art-add-edit',
@@ -24,20 +25,27 @@ export class ArtAddEditComponent implements OnInit {
 
 	}
 
-	onFileChange(event) {
-		let reader = new FileReader();
+	onFileUpload(event) {
+
 		if(event.target.files && event.target.files.length > 0) {
 			let file = event.target.files[0];
-			reader.readAsDataURL(file);
-			reader.onload = () => {
-				console.log(file)
-				this.artForm.get('art-file').setValue(
-					file.name
-					// filename: file.name,
-					// filetype: file.type,
-					// value: reader.result.split(',')[1]
-				)
-			};
+
+			let storageRef = firebase.storage().ref('arts/' + file.name);
+
+			storageRef.put(file).on('state_changed',
+				(snapshot) => {
+				},
+				(error) => {
+					console.log(error)
+				},
+				() => {
+					storageRef.getDownloadURL().then(
+						(url) => {
+							this.artForm.get('art-file').setValue(url);
+							console.log(this.artForm.value)
+						})
+				})
+
 		}
 	}
 
