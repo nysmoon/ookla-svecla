@@ -10,6 +10,7 @@ import * as firebase from 'firebase/app';
 export class ArtAddEditComponent implements OnInit {
 
 	public artForm: FormGroup;
+	public artTagsForm: FormArray;
 
 	constructor(private formBuilder: FormBuilder) {}
 
@@ -19,6 +20,7 @@ export class ArtAddEditComponent implements OnInit {
 		this.artForm = this.formBuilder.group({
 			'art-name': ['', Validators.required],
 			'art-description': ['', Validators.required],
+			'art-tags': this.artTagsForm,
 			'art-date': ['', Validators.required],
 			'art-file': ['', Validators.required],
 		})

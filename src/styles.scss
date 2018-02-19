@@ -391,6 +391,9 @@ Art page styles
     display: inline;
 }
 
+.art-tag:not(:last-child):after {
+    content:', ';
+}
 
 
 
