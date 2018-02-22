@@ -12,13 +12,12 @@
 		<h4 class="card-title">{{ art.title }}</h4>
 		<!--Text-->
 		<p class="card-text">{{ art.description }}</p>
+		<p class="card-text">Created: <small> {{ art.date }}</small></p>
 		<p class="card-text">Tags: <small class="art-tag" *ngFor="let tag of art.tags">{{ tag }}</small></p>
 	</div>
 	<!-- Card footer -->
 	<div class="card-data">
-		<ul>
-			<li><i class="fa fa-clock-o"></i> {{ art.date }}</li>
-		</ul>
+		<a (click)="editArt(art.id)">Edit Art</a>
 	</div>
 	<!-- Card footer -->
 </div>

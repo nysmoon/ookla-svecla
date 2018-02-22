@@ -2,10 +2,13 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpModule } from '@angular/http';
 
 import { MatNativeDateModule, MatInputModule } from '@angular/material';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 import { Routing } from './app.routing';
 
@@ -42,6 +45,7 @@ import { AuthGuardService } from './core/auth-guard.service';
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     BrowserAnimationsModule,
     Routing,
     FormsModule,
@@ -49,12 +53,17 @@ import { AuthGuardService } from './core/auth-guard.service';
     MatInputModule,
     MatDatepickerModule,
     MatFormFieldModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    NgbModule.forRoot(),
+    AutoCompleteModule
   ],
   providers: [
     AuthService,
     AuthGuardService,
     ArtService
+  ],
+  entryComponents: [
+    ArtAddEditComponent
   ],
   bootstrap: [AppComponent]
 })
