@@ -395,6 +395,16 @@ Art page styles
     display: inline;
 }
 
+// Add/Edit art modal
+
+.mat-form-field {
+	width: 100%;
+}
+
+input[type=file] {
+	border: none;
+} 
+
 .art-tag:not(:last-child):after {
     content:', ';
 }

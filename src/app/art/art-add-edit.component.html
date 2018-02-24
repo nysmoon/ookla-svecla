@@ -5,6 +5,11 @@
 				<h4 for="art-name">Art Form</h4>
 			</div>
 			<div class="form-group">
+				<label for="art-file">Upload Art File</label>
+				<input id="art-upload" class="form-control" type="file" name="art-file" (change)="onFileUpload($event)">
+				<img *ngIf="image_url" [src]="image_url" />
+			</div>
+			<div class="form-group">
 				<label for="art-name">Art Name</label>
 				<input class="form-control" type="text" name="art-name" id="art-name" formControlName="art-name">
 			</div>
@@ -24,25 +29,17 @@
 			</div>
 
 			<div class="form-group">
-				<label for="art-file">Upload Art File</label>
-				<input id="art-upload" class="form-control" type="file" name="art-file" (change)="onFileUpload($event)">
-			</div>
-			<div class="form-group">
 				<label for="art-file">Select Tags</label>
-				<input class="form-control" type="text" name="art-tags" (keyup)="onTagsUpdate($event)">
-			</div>
-			<div class="form-group">
-				<button class="btn btn-default" type="submit">Submit</button>
-			</div>
-		</form>
-<h3>Multiple</h3>
-<span class="ui-fluid">
-    <p-autoComplete [(ngModel)]="artTags" [suggestions]="artTagsSuggestions" (completeMethod)="suggestArtTags($event)" styleClass="wid100"
-        [minLength]="1" placeholder="Art Tags" field="name" [multiple]="true">
-    </p-autoComplete>
-</span>
-<ul>
-    <li *ngFor="let tag of artTags">{{tag.name}}</li>
-</ul>
-	</div>
+				<span class="ui-fluid">
+					<p-autoComplete [(ngModel)]="artTags" [ngModelOptions]="{standalone: true}" [suggestions]="artTagsSuggestions" (completeMethod)="suggestArtTags($event)" (onSelect)="onTagSelect($event)" styleClass="wid100"
+					[minLength]="1" placeholder="Art Tags" field="name" [multiple]="true">
+				</p-autoComplete>
+			</span>
+			<!-- 				<input class="form-control" type="text" name="art-tags" (keyup)="onTagsUpdate($event)"> -->
+		</div>
+		<div class="form-group">
+			<button class="btn btn-default" type="submit">Submit</button>
+		</div>
+	</form>
+</div>
 </div>
