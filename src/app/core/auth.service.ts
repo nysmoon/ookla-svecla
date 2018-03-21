@@ -7,63 +7,72 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class AuthService {
 
-  public email: string;
+	public email: string;
+	private token;
 
-  constructor(
-    private router: Router) {
-  }
+	constructor(
+		private router: Router) {
+	}
 
-  isAuthenticated() {
+	isAuthenticated() {
 
-    var user = firebase.auth().currentUser;
+		var user = firebase.auth().currentUser;
 
-    if (user) {
-      return true;
-    } else {
-      return false;
-    }
+		if (user) {
+			return true;
+		} else {
+			return false;
+		}
 
-  }
+	}
 
-  //// Email/Password Auth ////
-  emailSignUp(email: string, password: string) {
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then(
-      response => {
-        this.router.navigate(['/'])
-      }
-      )
-    .catch(
-      error => console.log(error)
-      );
-  }
+	emailSignUp(email: string, password: string) {
+		firebase.auth().createUserWithEmailAndPassword(email, password)
+		.then(
+			response => {
+				this.router.navigate(['/'])
+			}
+			)
+		.catch(
+			error => console.log(error)
+			);
+	}
 
-  emailLogin(email: string, password: string) {
+	emailLogin(email: string, password: string) {
 
-    firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(
-      response => {
-        // firebase.auth().currentUser.getIdToken()
-        // .then(
-        //   (token: string) => this.token = token
-        //   )
-        this.router.navigate(['/'])
-      }
-      )
-    .catch(error => console.log(error));
-  }
+		firebase.auth().signInWithEmailAndPassword(email, password)
+		.then(
+			response => {
+				firebase.auth().currentUser.getToken()
+				.then(
+					(token: string) => this.token = token
+					)
+				this.router.navigate(['/'])
+			}
+			)
+		.catch(error => console.log(error));
+	}
 
-  signOut() {
-    firebase.auth().signOut();
-  }
+	getToken() {
+		firebase.auth().currentUser.getToken()
+		.then(
+			(token: string) => this.token = token
+			);
+		return this.token;
+
+	}
+
+	signOut() {
+		firebase.auth().signOut();
+	}
 
   // Sends email allowing user to reset password
   resetPassword(email: string) {
-    const fbAuth = firebase.auth();
+  	const fbAuth = firebase.auth();
 
-    return fbAuth.sendPasswordResetEmail(email)
-    .then(() => console.log('email sent'))
-    .catch((error) => console.log(error))
+  	return fbAuth.sendPasswordResetEmail(email)
+  	.then(() => console.log('email sent'))
+  	.catch((error) => console.log(error))
   }
 
 }

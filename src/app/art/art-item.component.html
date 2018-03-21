@@ -3,17 +3,17 @@
 
 	<!--Card image-->
 	<div class="view overlay hm-white-slight hm-zoom">
-		<a href="{{art.url}}" data-lightbox="art"  data-title="{{art.title}}"> <img [src]="art.url" class="img-fluid" alt="{{art.title}}"></a>
+		<a href="{{art.url}}" data-lightbox="art"  data-title="{{art.title}}"> <img [src]="art['art-file']" class="img-fluid" alt="{{art.title}}"></a>
 	</div>
 
 	<!--Card content-->
 	<div class="card-body">
 		<!--Title-->
-		<h4 class="card-title">{{ art.title }}</h4>
+		<h4 class="card-title">{{ art['art-name'] }}</h4>
 		<!--Text-->
-		<p class="card-text">{{ art.description }}</p>
-		<p class="card-text">Created: <small> {{ art.date }}</small></p>
-		<p class="card-text">Tags: <small class="art-tag" *ngFor="let tag of art.tags">{{ tag }}</small></p>
+		<p class="card-text">{{ art['art-description'] }}</p>
+		<p class="card-text">Created: <small> {{ art['art-date'] }}</small></p>
+		<p class="card-text">Tags: <small class="art-tag" *ngFor="let tag of art['tags']">{{ tag }}</small></p>
 	</div>
 	<!-- Card footer -->
 	<div class="card-data">

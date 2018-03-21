@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
 import * as firebase from 'firebase/app';
-import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+// import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 import { ArtService } from './art.service'
 
@@ -15,7 +15,7 @@ export class ArtAddEditComponent implements OnInit {
 	@Input() art;
 
 	public artForm: FormGroup;
-	public artTagsForm: FormArray;
+	public artTagsArray: number[] = [];
 
 	public image_url;
 	private art_url;
@@ -24,7 +24,7 @@ export class ArtAddEditComponent implements OnInit {
 	artTagsSuggestions: any[];
 
 	constructor(private formBuilder: FormBuilder, 
-		public activeModal: NgbActiveModal,
+		// public activeModal: NgbActiveModal,
 		private artService: ArtService) {}
 
 	ngOnInit() {
@@ -32,12 +32,10 @@ export class ArtAddEditComponent implements OnInit {
 		this.artForm = this.formBuilder.group({
 			'art-name': ['', Validators.required],
 			'art-description': ['', Validators.required],
-			'art-tags': this.artTagsForm,
+			'art-tags': [],
 			'art-date': ['', Validators.required],
 			'art-file': ['', Validators.required],
 		})
-
-		this.artTagsForm = this.formBuilder.array([])
 
 	}
 
@@ -55,7 +53,7 @@ export class ArtAddEditComponent implements OnInit {
 		let filtered : any[] = [];
 		for(let i = 0; i < artTags.length; i++) {
 			let artTag = artTags[i];
-			if(artTag.name.toLowerCase().indexOf(query.toLowerCase()) == 0 && this.artTagsForm.value.indexOf(artTag.id) == -1) {
+			if(artTag.name.toLowerCase().indexOf(query.toLowerCase()) == 0 && this.artTagsArray.indexOf(artTag.id) == -1) {
 				filtered.push(artTag);
 			}
 		}
@@ -64,9 +62,9 @@ export class ArtAddEditComponent implements OnInit {
 
 	onTagSelect(tag) {
 		console.log(tag)
-		this.artTagsForm.push(new FormControl(tag.id))
+		this.artTagsArray.push(tag.id)
 
-		console.log(this.artTagsForm.value)
+		console.log(this.artTagsArray)
 	}
 
 
@@ -95,25 +93,36 @@ export class ArtAddEditComponent implements OnInit {
 	}
 
 	onSubmit() {
-		console.log(this.artForm.get('art-tags').value);
 
-		// let storageRef = firebase.storage().ref('arts/' + this.art_url.name);
+		this.artForm.get('art-tags').setValue(this.artTagsArray)
 
-		// storageRef.put(this.art_url).on('state_changed',
-		// 	(snapshot) => {
-		// 	},
-		// 	(error) => {
-		// 		console.log(error)
-		// 	},
-		// 	() => {
-		// 		storageRef.getDownloadURL().then(
-		// 			(url) => {
-		// 				this.artForm.get('art-file').setValue(url);
-		// 				console.log(this.artForm.value)
-		// 			})
-		// 	})
+		console.log(this.artForm.value);
+		console.log(this.artTagsArray);
 
-		// this.image_url = '';
+		let storageRef = firebase.storage().ref('arts/' + this.art_url.name);
+
+		storageRef.put(this.art_url).on('state_changed',
+			(snapshot) => {
+			},
+			(error) => {
+				console.log(error)
+			},
+			() => {
+				storageRef.getDownloadURL().then(
+					(url) => {
+						this.artForm.get('art-file').setValue(url);
+						console.log(this.artForm.value)
+						this.artService.addArt(this.artForm.value).
+						subscribe(
+							(response) => console.log(response),
+							(error) => console.log(error)
+							);
+					})
+			})
+
+		this.image_url = '';
+
+
 
 	}
 }

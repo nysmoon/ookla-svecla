@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 
 import { MatNativeDateModule, MatInputModule } from '@angular/material';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -28,6 +30,7 @@ import { ArtService } from './art/art.service';
 
 import { AuthService } from './core/auth.service';
 import { AuthGuardService } from './core/auth-guard.service';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -55,7 +58,9 @@ import { AuthGuardService } from './core/auth-guard.service';
     MatFormFieldModule,
     MatNativeDateModule,
     NgbModule.forRoot(),
-    AutoCompleteModule
+    AutoCompleteModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig, 'ookla-svecla-dev'),
+    AngularFireDatabaseModule
   ],
   providers: [
     AuthService,
