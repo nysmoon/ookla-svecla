@@ -16,6 +16,7 @@ export class AppComponent implements OnInit {
   title = 'app';
 
   ngOnInit() {
+  	// firebase.auth().signOut;
 	firebase.initializeApp(firebaseConfig);
   }
 }

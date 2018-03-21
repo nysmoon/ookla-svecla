@@ -6,6 +6,7 @@ export const environment = {
 		databaseURL: "https://ookla-svecla.firebaseio.com",
 		projectId: "ookla-svecla",
 		storageBucket: "ookla-svecla.appspot.com",
-		messagingSenderId: "863251485422"
+		messagingSenderId: "863251485422",
+		iOSEmulatorFlush: true
 	}
 };
