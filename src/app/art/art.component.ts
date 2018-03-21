@@ -3,6 +3,7 @@ import { Response } from '@angular/http';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 
 import {Observable} from 'rxjs/Observable';
+import * as firebase from 'firebase/app';
 
 import { Art } from './art.model';
 
@@ -20,6 +21,7 @@ export class ArtComponent implements OnInit {
 
 	date = new Date;
 
+	public isAuthenticated;
 	public arts: Observable<{}[]>;
 	public allArts = [];
 
@@ -35,55 +37,17 @@ export class ArtComponent implements OnInit {
 
 	ngOnInit() {
 
+		let self = this;
 
-
-		// this.artService.getArts();
-
-		// this.arts = this.artService.allArts
+		firebase.auth().onAuthStateChanged(function(user) {
+			if (user) {
+				self.isAuthenticated = true;
+			} else {
+				self.isAuthenticated = false;
+			}
+		});
 
 
 	}
-
-	// 	this.artService.getArts().subscribe(
-
-
-	// let arts_ = [
-	// {
-	// 	'id': 1,
-	// 	'title': 'Test Image',
-	// 	'description': 'Test Description',
-	// 	'url': 'https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%287%29.jpg',
-	// 	'date': 'Feb 19, 2018',
-	// 	'tags': ['paint', 'nature']
-	// },{
-	// 	'id': 2,
-	// 	'title': 'Test Image',
-	// 	'description': 'Test Description',
-	// 	'url': 'https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%287%29.jpg',
-	// 	'date': 'Feb 19, 2018',
-	// 	'tags': ['paint', 'nature']			
-	// },{
-	// 	'id': 3,
-	// 	'title': 'Test Image',
-	// 	'description': 'Test Description',
-	// 	'url': 'https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%287%29.jpg',
-	// 	'date': 'Feb 19, 2018',
-	// 	'tags': ['paint', 'nature']			
-	// },{
-	// 	'id': 4,
-	// 	'title': 'Test Image',
-	// 	'description': 'Test Description',
-	// 	'url': 'https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%287%29.jpg',
-	// 	'date': 'Feb 19, 2018',
-	// 	'tags': ['paint', 'nature']			
-	// },{
-	// 	'id': 5,
-	// 	'title': 'Test Image',
-	// 	'description': 'Test Description',
-	// 	'url': 'https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%287%29.jpg',
-	// 	'date': 'Feb 19, 2018',
-	// 	'tags': ['paint', 'nature']			
-	// }
-	// ]
 	
 }

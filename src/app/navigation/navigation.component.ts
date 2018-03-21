@@ -13,7 +13,7 @@ export class NavigationComponent implements OnInit {
 	public isAuthenticated: boolean;
 	public email: string;
 
-	constructor(private auth: AuthService, private router: Router) { }
+	constructor(private authService: AuthService, private router: Router) { }
 
 	ngOnInit() {
 
@@ -30,7 +30,7 @@ export class NavigationComponent implements OnInit {
 	}
 
 	onLogout() {
-		this.auth.signOut();
+		this.authService.signOut();
 		this.router.navigate(['']);
 	}
 

@@ -9,6 +9,7 @@ export class AuthService {
 
 	public email: string;
 	private token;
+	private isAuth: boolean;
 
 	constructor(
 		private router: Router) {
@@ -16,13 +17,25 @@ export class AuthService {
 
 	isAuthenticated() {
 
-		var user = firebase.auth().currentUser;
+		let user = firebase.auth().currentUser
+		console.log(user)
+			if (user) {
+				this.email = user.email;
+				this.isAuth = true;
+			} else {
+				this.isAuth = false;
+			}
+		console.log(this.isAuth)
+		return this.isAuth;
 
-		if (user) {
-			return true;
-		} else {
-			return false;
-		}
+		// var user = firebase.auth().currentUser;
+		// console.log(user)
+
+		// if (user) {
+		// 	return true;
+		// } else {
+		// 	return false;
+		// }
 
 	}
 
@@ -47,6 +60,8 @@ export class AuthService {
 				.then(
 					(token: string) => this.token = token
 					)
+				this.isAuth = true;
+				console.log(this.isAuth)
 				this.router.navigate(['/'])
 			}
 			)

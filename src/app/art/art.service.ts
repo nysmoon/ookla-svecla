@@ -4,9 +4,9 @@ import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 
 import * as firebase from 'firebase/app';
 
-import { Subject } from 'rxjs/Rx';
 import 'rxjs/Rx';
 
+import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
 
 declare var $: any;
@@ -14,16 +14,17 @@ declare var $: any;
 @Injectable()
 export class ArtService {
 
-	artsChanged = new Subject<Object[]>();
-
 	public arts = [];
 	public allArts = [];
 	private database = firebase.database();
+	private databaseURL = environment.firebaseConfig.databaseURL
 
 
 	constructor(private http: Http,
 		private authService: AuthService,
-				private db: AngularFireDatabase) {}
+				private db: AngularFireDatabase) {
+		console.log(environment['databaseURL'])
+	}
 
 	getArtTags() {
 		return this.http.get('../assets/art-tags.json')
@@ -32,14 +33,6 @@ export class ArtService {
 	}
 
 	getArts() {
-		// this.db.list('/arts').subscribe(items => {
-  //   items.forEach(item => {
-  //     Object.keys(item).map(key=>item[key]).map(order => {
-  //       console.log(order);
-  //     })
-  //   })
-  // })
-		// this.http.get('https://ookla-svecla-dev.firebaseio.com/arts.json')
 	}
 
 	addArt(art: any) {
@@ -51,6 +44,6 @@ export class ArtService {
 		// let arts = [];
 		// this.getArts().subscribe((arts) => { return arts; });
 
-		return this.http.post('https://ookla-svecla-dev.firebaseio.com/arts.json?auth=' + token, newArt);
+		return this.http.post(this.databaseURL + '/arts.json?auth=' + token, newArt);
 	}
 }

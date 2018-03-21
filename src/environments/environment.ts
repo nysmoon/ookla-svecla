@@ -11,6 +11,6 @@ export const environment = {
 		databaseURL: "https://ookla-svecla-dev.firebaseio.com",
 		projectId: "ookla-svecla-dev",
 		storageBucket: "ookla-svecla-dev.appspot.com",
-		messagingSenderId: "670355218333"
+		messagingSenderId: "670355218333",
 	}
 };
