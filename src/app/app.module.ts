@@ -59,7 +59,8 @@ import { environment } from '../environments/environment';
     MatNativeDateModule,
     NgbModule.forRoot(),
     AutoCompleteModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig, 'ookla-svecla-dev'),
+    // AngularFireModule.initializeApp(environment.firebaseConfig, 'ookla-svecla-dev'),
+    AngularFireModule.initializeApp(environment.firebaseConfig, 'ookla-svecla'),
     AngularFireDatabaseModule
   ],
   providers: [
