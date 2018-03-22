@@ -110,13 +110,10 @@ export class ArtAddEditComponent implements OnInit {
 			() => {
 				storageRef.getDownloadURL().then(
 					(url) => {
+
 						this.artForm.get('art-file').setValue(url);
-						console.log(this.artForm.value)
-						this.artService.addArt(this.artForm.value).
-						subscribe(
-							(response) => console.log(response),
-							(error) => console.log(error)
-							);
+
+						this.artService.addArt(this.artForm.value)
 					})
 			})
 

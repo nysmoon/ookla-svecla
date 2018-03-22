@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 export class AuthService {
 
 	public email: string;
-	private token;
+	public token;
 	private isAuth: boolean;
 
 	constructor(
@@ -19,24 +19,14 @@ export class AuthService {
 
 		let user = firebase.auth().currentUser
 		console.log(user)
-			if (user) {
-				this.email = user.email;
-				this.isAuth = true;
-			} else {
-				this.isAuth = false;
-			}
+		if (user) {
+			this.email = user.email;
+			this.isAuth = true;
+		} else {
+			this.isAuth = false;
+		}
 		console.log(this.isAuth)
 		return this.isAuth;
-
-		// var user = firebase.auth().currentUser;
-		// console.log(user)
-
-		// if (user) {
-		// 	return true;
-		// } else {
-		// 	return false;
-		// }
-
 	}
 
 	emailSignUp(email: string, password: string) {
@@ -71,8 +61,10 @@ export class AuthService {
 	getToken() {
 		firebase.auth().currentUser.getIdToken()
 		.then(
-			(token: string) => this.token = token
-			);
+			(token: string) => {
+				this.token = token
+			});
+		console.log(this.token)
 		return this.token;
 
 	}

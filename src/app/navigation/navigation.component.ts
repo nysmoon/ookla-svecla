@@ -29,6 +29,17 @@ export class NavigationComponent implements OnInit {
 		});
 	}
 
+	showToken() {
+
+		console.log(firebase.auth().currentUser.getIdToken())
+
+		firebase.auth().currentUser.getIdToken()
+		.then(
+			(token: string) => console.log(token)
+			)
+
+	}
+
 	onLogout() {
 		this.authService.signOut();
 		this.router.navigate(['']);

@@ -26,7 +26,7 @@ export class ArtComponent implements OnInit {
 	public allArts = [];
 
 	constructor(private artService: ArtService,
-				private db: AngularFireDatabase) {
+		private db: AngularFireDatabase) {
 		this.arts = db.list('/arts').valueChanges();
 		
 		db.list('/arts').valueChanges().subscribe(

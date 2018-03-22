@@ -19,9 +19,12 @@
 			<li class='nav-item' routerLinkActive="active">
 				<a class="nav-link"  [routerLink]="['/art']"><i class="fa fa-paint-brush" aria-hidden="true"></i> Art</a>
 			</li>
+<!-- 			<li class='nav-item' routerLinkActive="active">
+				<a class="nav-link"  (click)="showToken()"><i class="fa fa-paint-brush" aria-hidden="true"></i> Show Token</a>
+			</li> -->
 			<li class='nav-item' routerLinkActive="active" *ngIf="isAuthenticated">
 				<a class="nav-link" (click)="onLogout()"><i class="fa fa-user" aria-hidden="true"></i> Log Out</a>
 			</li>
-	</ul>
-</div>
+		</ul>
+	</div>
 </nav>

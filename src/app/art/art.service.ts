@@ -22,8 +22,7 @@ export class ArtService {
 
 	constructor(private http: Http,
 		private authService: AuthService,
-				private db: AngularFireDatabase) {
-		console.log(environment['databaseURL'])
+		private db: AngularFireDatabase) {
 	}
 
 	getArtTags() {
@@ -37,13 +36,17 @@ export class ArtService {
 
 	addArt(art: any) {
 
-		const token = this.authService.getToken();
-
 		let newArt = JSON.stringify(art);
 
-		// let arts = [];
-		// this.getArts().subscribe((arts) => { return arts; });
+		firebase.auth().currentUser.getIdToken()
+		.then(
+			(token: string) => {
+				this.http.post(this.databaseURL + '/arts.json?auth=' + token, newArt)
+				.subscribe(
+					(response) => console.log(response),
+					(error) => console.log(error)
+					);
+			});
 
-		return this.http.post(this.databaseURL + '/arts.json?auth=' + token, newArt);
 	}
 }
