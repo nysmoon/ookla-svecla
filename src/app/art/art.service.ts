@@ -49,4 +49,19 @@ export class ArtService {
 			});
 
 	}
+
+
+	addTag(new_tag) {
+
+		firebase.auth().currentUser.getIdToken()
+		.then(
+			(token: string) => {
+				this.http.post(this.databaseURL + '/art-tags.json?auth=' + token, {'tag-name': new_tag})
+				.subscribe(
+					(response) => console.log(response),
+					(error) => console.log(error)
+					);
+			});
+
+	}
 }

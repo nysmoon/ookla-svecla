@@ -29,10 +29,6 @@ export class ArtComponent implements OnInit {
 		private db: AngularFireDatabase) {
 		this.arts = db.list('/arts').valueChanges();
 		
-		db.list('/arts').valueChanges().subscribe(
-			(art) => console.log(art)
-			)
-		
 	}
 
 	ngOnInit() {
@@ -46,7 +42,6 @@ export class ArtComponent implements OnInit {
 				self.isAuthenticated = false;
 			}
 		});
-
 
 	}
 	

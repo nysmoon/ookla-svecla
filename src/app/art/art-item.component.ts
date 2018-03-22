@@ -1,20 +1,25 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { ArtAddEditComponent } from './art-add-edit.component';
+import { ArtAddEditComponent } from './art-add-edit.component'
 
-import { Art } from './art.model'
+
+import { Art } from './art.model';
 
 @Component({
 	selector: 'os-art-item',
 	templateUrl: './art-item.component.html'
 })
 
-export class ArtItemComponent {
+export class ArtItemComponent implements OnInit {
 
 	@Input() art: Art;
 
-	constructor(private modalService: NgbModal) {}
+	constructor(private modalService: NgbModal) {
+	}
+
+	ngOnInit() {
+	}
 
 	editArt(art) {
 		const modalRef = this.modalService.open(ArtAddEditComponent);

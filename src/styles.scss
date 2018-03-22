@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Oxygen|Qwigley');
+@import url('https://fonts.googleapis.com/css?family=Oxygen|Qwigley|Philosopher');
 @import url('~@angular/material/prebuilt-themes/indigo-pink.css');
 /* ----------------------------------------------------
 General styles
@@ -10,6 +10,7 @@ body {
 	background-image: url('assets/images/bg.jpg');
 	background-position: left top;
 	background-repeat: repeat;
+	font-size: 14px;
 }
 
 @media (min-width: 768px) {
@@ -373,9 +374,23 @@ Home page styles
 
     
 /* ----------------------------------------------------
-Art page styles
+Arts page styles
 ------------------------------------------------------- */
 
+.card {
+	height: 550px;
+	margin-top: 15px;
+}
+
+.card .card-image {
+    overflow: hidden;
+    height: 200px;
+}
+
+.card .card-image img {
+    width: auto;
+    min-height: 200px;
+}
 
 .card .card-data {
     background-color: #929FBA;
@@ -395,6 +410,21 @@ Art page styles
     display: inline;
 }
 
+.card p {
+	font-family: 'Philosopher', sans-serif;
+}
+
+.card p.card-title {
+	font-size: 2rem;
+	text-align: center;
+	color: #595959;
+}
+
+.card p.card-description {
+	font-size: 1.2rem;
+	color: #8c8c8c;
+}
+
 // Add/Edit art modal
 
 .mat-form-field {
@@ -405,10 +435,15 @@ input[type=file] {
 	border: none;
 } 
 
-.art-tag:not(:last-child):after {
-    content:', ';
+.art-tag {
+	color: #ffffff;
+	background-color: #929FBA;
+	margin: 0 5px;
 }
 
+.ui-inputgroup {
+	width: 100%;
+}
 
 
 /* ----------------------------------------------------

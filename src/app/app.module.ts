@@ -11,6 +11,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
 
 import { Routing } from './app.routing';
 
@@ -59,8 +61,9 @@ import { environment } from '../environments/environment';
     MatNativeDateModule,
     NgbModule.forRoot(),
     AutoCompleteModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig, 'ookla-svecla-dev'),
-    // AngularFireModule.initializeApp(environment.firebaseConfig, 'ookla-svecla'),
+    ButtonModule,
+    InputTextModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule
   ],
   providers: [

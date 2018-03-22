@@ -2,18 +2,18 @@
 <div class="card">
 
 	<!--Card image-->
-	<div class="view overlay hm-white-slight hm-zoom">
-		<a href="{{art.url}}" data-lightbox="art"  data-title="{{art.title}}"> <img [src]="art['art-file']" class="img-fluid" alt="{{art.title}}"></a>
+	<div class="view overlay hm-white-slight hm-zoom card-image">
+		<a [href]="art['art-file']" data-lightbox="art"  data-title="{{ art['art-name'] }}"> <img [src]="art['art-file']" class="img-fluid" alt="{{ art['art-name'] }}"></a>
 	</div>
 
 	<!--Card content-->
 	<div class="card-body">
 		<!--Title-->
-		<h4 class="card-title">{{ art['art-name'] }}</h4>
+		<p class="card-title">{{ art['art-name'] }}</p>
 		<!--Text-->
-		<p class="card-text">{{ art['art-description'] }}</p>
-		<p class="card-text">Created: <small> {{ art['art-date'] }}</small></p>
-		<p class="card-text">Tags: <small class="art-tag" *ngFor="let tag of art['tags']">{{ tag }}</small></p>
+		<p class="card-text card-description">Description: <small>{{ art['art-description'] }}</small></p>
+		<p class="card-text card-description">Created: <small>{{ art['art-date']| date }}</small></p>
+		<p class="card-text card-description">Tags: <small class="badge art-tag" *ngFor="let tag of art['art-tags']">{{ tag.name }}</small></p>
 	</div>
 	<!-- Card footer -->
 	<div class="card-data">

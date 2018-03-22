@@ -28,18 +28,29 @@
 				</mat-form-field>
 			</div>
 
-			<div class="form-group">
-				<label for="art-file">Select Tags</label>
-				<span class="ui-fluid">
-					<p-autoComplete [(ngModel)]="artTags" [ngModelOptions]="{standalone: true}" [suggestions]="artTagsSuggestions" (completeMethod)="suggestArtTags($event)" (onSelect)="onTagSelect($event)" styleClass="wid100"
-					[minLength]="1" placeholder="Art Tags" field="name" [multiple]="true">
-				</p-autoComplete>
-			</span>
-			<!-- 				<input class="form-control" type="text" name="art-tags" (keyup)="onTagsUpdate($event)"> -->
+			<div class="form-group row">
+				<div class="col-6">
+					<label for="art-file">Select Tags</label>
+					<span class="ui-fluid">
+						<p-autoComplete [(ngModel)]="artTags" [ngModelOptions]="{standalone: true}" [suggestions]="artTagsSuggestions" (completeMethod)="suggestArtTags($event)" (onSelect)="onTagSelect($event)" styleClass="wid100"
+						[minLength]="1" placeholder="Art Tags" field="tag-name" [multiple]="true">
+					</p-autoComplete>
+				</span>
+			</div>
+			<div class="col-6 ui-g ui-fluid">
+				<label for="art-file">Add New Tag</label>
+				<div class="ui-inputgroup">
+					<input type="text" pInputText placeholder="New Tag" #newTag>   
+					<button pButton type="button" icon="fa-check" class="ui-button-success" (click)="addTag(newTag.value)"></button>    
+					<button pButton type="button" icon="fa-close" class="ui-button-danger" (click)="cancelAddTag()"></button>      
+				</div>
+			</div>
 		</div>
 		<div class="form-group">
-			<button class="btn btn-default" type="submit">Submit</button>
+			<button pButton type="submit" label="Submit"></button>
 		</div>
 	</form>
+<!-- 	<button pButton type="button" label="Submit" (click)="showForm()"></button> -->
+
 </div>
 </div>

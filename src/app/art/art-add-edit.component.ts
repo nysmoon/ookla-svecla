@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
 import * as firebase from 'firebase/app';
 // import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 
 import { ArtService } from './art.service'
 
@@ -15,6 +16,7 @@ export class ArtAddEditComponent implements OnInit {
 	@Input() art;
 
 	public artForm: FormGroup;
+	public artTagsFormArray: FormArray;
 	public artTagsArray: number[] = [];
 
 	public image_url;
@@ -25,17 +27,23 @@ export class ArtAddEditComponent implements OnInit {
 
 	constructor(private formBuilder: FormBuilder, 
 		// public activeModal: NgbActiveModal,
-		private artService: ArtService) {}
+		private artService: ArtService,
+		private db: AngularFireDatabase) {
+			// this.artTags = db.list('/tags').valueChanges();
+
+	}
 
 	ngOnInit() {
+
+		this.artTagsFormArray = this.formBuilder.array([]);
 
 		this.artForm = this.formBuilder.group({
 			'art-name': ['', Validators.required],
 			'art-description': ['', Validators.required],
-			'art-tags': [],
 			'art-date': ['', Validators.required],
 			'art-file': ['', Validators.required],
-		})
+			'art-tags': this.artTagsFormArray
+		});
 
 	}
 
@@ -43,9 +51,10 @@ export class ArtAddEditComponent implements OnInit {
 
 		let query = event.query;
 
-		this.artService.getArtTags().then(
+		this.db.list('/art-tags').valueChanges().subscribe(
 			artTags => {
 				this.artTagsSuggestions = this.filterArtTags(query, artTags);
+				console.log(this.artTagsSuggestions)
 			});
 	}
 
@@ -53,20 +62,29 @@ export class ArtAddEditComponent implements OnInit {
 		let filtered : any[] = [];
 		for(let i = 0; i < artTags.length; i++) {
 			let artTag = artTags[i];
-			if(artTag.name.toLowerCase().indexOf(query.toLowerCase()) == 0 && this.artTagsArray.indexOf(artTag.id) == -1) {
+			// if(artTag['tag-name'].toLowerCase().indexOf(query.toLowerCase()) == 0 && this.artTagsArray.indexOf(artTag.id) == -1) {
+			if(artTag['tag-name'].toLowerCase().indexOf(query.toLowerCase()) == 0) {
 				filtered.push(artTag);
 			}
 		}
+				console.log(filtered)
 		return filtered;
 	}
 
 	onTagSelect(tag) {
-		console.log(tag)
-		this.artTagsArray.push(tag.id)
 
-		console.log(this.artTagsArray)
+		let tag_control = this.formBuilder.control(tag)
+
+		this.artTagsFormArray.push(tag_control);
+		this.artTagsArray.push(tag)
+
+		console.log(this.artTagsFormArray)
 	}
 
+	addTag(new_tag) {
+		console.log(new_tag)
+		this.artService.addTag(new_tag)
+	}
 
 
 	onFileUpload(event) {
@@ -94,11 +112,6 @@ export class ArtAddEditComponent implements OnInit {
 
 	onSubmit() {
 
-		this.artForm.get('art-tags').setValue(this.artTagsArray)
-
-		console.log(this.artForm.value);
-		console.log(this.artTagsArray);
-
 		let storageRef = firebase.storage().ref('arts/' + this.art_url.name);
 
 		storageRef.put(this.art_url).on('state_changed',
@@ -119,7 +132,10 @@ export class ArtAddEditComponent implements OnInit {
 
 		this.image_url = '';
 
-
-
 	}
+
+	showForm() {
+		console.log(this.artForm.value)
+	}
+
 }
