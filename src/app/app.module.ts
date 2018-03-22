@@ -23,6 +23,7 @@ import { UserProfileComponent } from './users/user-profile/user-profile.componen
 import { NavigationComponent } from './navigation/navigation.component';
 import { HomeComponent } from './home/home.component';
 import { ArtComponent } from './art/art.component';
+import { TagsComponent } from './tags/tags.component';
 import { ArtItemComponent } from './art/art-item.component';
 import { ArtAddEditComponent } from './art/art-add-edit.component';
 import { FooterComponent } from './footer/footer.component';
@@ -45,6 +46,7 @@ import { environment } from '../environments/environment';
     ArtComponent,
     ArtItemComponent,
     ArtAddEditComponent,
+    TagsComponent,
     FooterComponent,
     NotFoundComponent
   ],

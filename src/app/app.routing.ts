@@ -6,6 +6,7 @@ import { ForgotPasswordComponent } from './users/user-login/forgot-password.comp
 import { UserProfileComponent } from './users/user-profile/user-profile.component';
 import { HomeComponent } from './home/home.component';
 import { ArtComponent } from './art/art.component';
+import { TagsComponent } from './tags/tags.component';
 import { ArtAddEditComponent } from './art/art-add-edit.component';
 import { NotFoundComponent } from './core/not-found/not-found.component';
 
@@ -28,6 +29,9 @@ const osRoutes: Routes = [
 	}, {
 		path: 'art-add-edit',
 		component: ArtAddEditComponent
+	}, {
+		path: 'tags',
+		component: TagsComponent
 	}, {
 		path: 'not-found',
 		component: NotFoundComponent

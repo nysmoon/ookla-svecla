@@ -1,0 +1,23 @@
+<div class="row justify-content-center">
+	<div class="col-12 col-md-6">
+		<ul class="list-group">
+			<li class="list-group-item" *ngFor="let tag of tags | async; let i=index;">
+				<div class="" *ngIf="!edit[i]">
+					<p class="float-left">{{ tag['tag-name'] }}</p>
+					<button pButton type="button" icon="fa-trash" class="ui-button-danger float-right" (click)="onCancelEditClick(i)"></button>					
+					<button pButton type="button" icon="fa-edit" class="ui-button-info float-right" (click)="onEditClick(i)"></button>    
+				</div>
+				<div class="" *ngIf="edit[i]">
+					<input class="float-left" value="{{ tag['tag-name'] }}">
+					<button pButton type="button" icon="fa-check" class="ui-button-success float-right" (click)="addTag(newTagInput)"></button>    
+					<button pButton type="button" icon="fa-close" class="ui-button-danger float-right" (click)="onCancelEditClick(i)"></button>					
+				</div>
+			</li>
+			<li class="list-group-item">
+				<input class="float-left" placeholder="Add New Tag" #newTagInput>
+				<button pButton type="button" icon="fa-check" class="ui-button-success float-right" (click)="addTag(newTagInput)"></button>    
+				<button pButton type="button" icon="fa-close" class="ui-button-danger float-right" (click)="onCancelEditClick(i)"></button>					
+			</li>
+		</ul>
+	</div>
+</div>

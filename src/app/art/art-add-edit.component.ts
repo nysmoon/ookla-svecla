@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
+import { Router } from '@angular/router'; 
 import * as firebase from 'firebase/app';
 // import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
@@ -28,7 +29,8 @@ export class ArtAddEditComponent implements OnInit {
 	constructor(private formBuilder: FormBuilder, 
 		// public activeModal: NgbActiveModal,
 		private artService: ArtService,
-		private db: AngularFireDatabase) {
+		private db: AngularFireDatabase,
+		private router: Router) {
 			// this.artTags = db.list('/tags').valueChanges();
 
 	}
@@ -81,9 +83,13 @@ export class ArtAddEditComponent implements OnInit {
 		console.log(this.artTagsFormArray)
 	}
 
-	addTag(new_tag) {
-		console.log(new_tag)
-		this.artService.addTag(new_tag)
+	// addTag(new_tag_input) {
+	// 	this.artService.addTag(new_tag_input.value);
+	// 	new_tag_input.value = '';
+	// }
+
+	cancelAddTag(new_tag_input) {
+		new_tag_input.value = '';
 	}
 
 
@@ -131,6 +137,7 @@ export class ArtAddEditComponent implements OnInit {
 			})
 
 		this.image_url = '';
+		this.router.navigate(['/art'])
 
 	}
 

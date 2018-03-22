@@ -25,12 +25,6 @@ export class ArtService {
 		private db: AngularFireDatabase) {
 	}
 
-	getArtTags() {
-		return this.http.get('../assets/art-tags.json')
-		.toPromise()
-		.then(res => { return res.json().data } );
-	}
-
 	getArts() {
 	}
 
@@ -51,17 +45,5 @@ export class ArtService {
 	}
 
 
-	addTag(new_tag) {
 
-		firebase.auth().currentUser.getIdToken()
-		.then(
-			(token: string) => {
-				this.http.post(this.databaseURL + '/art-tags.json?auth=' + token, {'tag-name': new_tag})
-				.subscribe(
-					(response) => console.log(response),
-					(error) => console.log(error)
-					);
-			});
-
-	}
 }
