@@ -79,8 +79,6 @@ export class ArtAddEditComponent implements OnInit {
 
 		this.artTagsFormArray.push(tag_control);
 		this.artTagsArray.push(tag)
-
-		console.log(this.artTagsFormArray)
 	}
 
 	// addTag(new_tag_input) {

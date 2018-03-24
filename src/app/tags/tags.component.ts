@@ -7,6 +7,8 @@ import * as firebase from 'firebase/app';
 
 import { environment } from '../../environments/environment';
 
+declare let $: any;
+
 @Component({
 	selector: 'os-tags',
 	templateUrl: './tags.component.html'
@@ -21,7 +23,7 @@ export class TagsComponent implements OnInit {
 	public edit = [];
 
 	constructor(private db: AngularFireDatabase,
-							private http: Http) {}
+		private http: Http) {}
 
 	ngOnInit() {
 
@@ -33,7 +35,6 @@ export class TagsComponent implements OnInit {
 				tags.forEach(
 					(tag) => {
 						this.edit[i] = false;
-						console.log(this.edit[i]);
 						i++;
 					})
 			})
@@ -42,11 +43,19 @@ export class TagsComponent implements OnInit {
 	}
 
 	getTags() {
-		this.tags = this.db.list('/art-tags').valueChanges();
+		this.tags = this.db.list('/art-tags').snapshotChanges().map(actions => {
+			return actions.map(a => {
+				const tag = a.payload.val();
+				const key = a.payload.key;
+				return { key, tag };
+			});
+		});
+
 	}
 
 	onEditClick(index) {
 		this.edit[index] = true;
+		console.log(this.edit)
 	}
 
 	onCancelEditClick(index) {
@@ -65,6 +74,15 @@ export class TagsComponent implements OnInit {
 					(error) => console.log(error)
 					);
 			});
+
+	}
+
+	editTag(old_tag_key, tag_index) {
+
+
+		this.db.list('/art-tags/').update(old_tag_key, { 'tag-name': $('#edit-tag-input-' + tag_index).val() })
+
+		this.edit[tag_index] = false;
 
 	}
 
