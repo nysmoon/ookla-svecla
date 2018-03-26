@@ -8,11 +8,11 @@ import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { ArtService } from './art.service'
 
 @Component({
-	selector: 'os-art-add-edit',
-	templateUrl: './art-add-edit.component.html'
+	selector: 'os-art-form',
+	templateUrl: './art-form.component.html'
 })
 
-export class ArtAddEditComponent implements OnInit {
+export class ArtFormComponent implements OnInit {
 
 	@Input() art;
 

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { ArtAddEditComponent } from './art-add-edit.component'
+import { ArtFormComponent } from './art-form.component'
 
 
 import { Art } from './art.model';
@@ -22,8 +22,8 @@ export class ArtItemComponent implements OnInit {
 	}
 
 	editArt(art) {
-		const modalRef = this.modalService.open(ArtAddEditComponent);
-		modalRef.componentInstance.art = art;
+		// const modalRef = this.modalService.open(ArtAddEditComponent);
+		// modalRef.componentInstance.art = art;
 	}
 
 }

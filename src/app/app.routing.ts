@@ -7,7 +7,7 @@ import { UserProfileComponent } from './users/user-profile/user-profile.componen
 import { HomeComponent } from './home/home.component';
 import { ArtComponent } from './art/art.component';
 import { TagsComponent } from './tags/tags.component';
-import { ArtAddEditComponent } from './art/art-add-edit.component';
+import { ArtFormComponent } from './art/art-form.component';
 import { NotFoundComponent } from './core/not-found/not-found.component';
 
 const osRoutes: Routes = [
@@ -27,8 +27,8 @@ const osRoutes: Routes = [
 		path: 'art',
 		component: ArtComponent
 	}, {
-		path: 'art-add-edit',
-		component: ArtAddEditComponent
+		path: 'art-form',
+		component: ArtFormComponent
 	}, {
 		path: 'tags',
 		component: TagsComponent

@@ -9,6 +9,8 @@ import * as firebase from 'firebase/app';
 
 import { environment } from '../../environments/environment';
 
+import { TagService } from './tags.service';
+
 declare let $: any;
 
 interface Tag {
@@ -23,27 +25,28 @@ interface Tag {
 
 export class TagsComponent implements OnInit {
 
-	private databaseURL = environment.firebaseConfig.databaseURL;
-
-	public tagsCollection: AngularFirestoreCollection<Tag>;
 	public tagsDocument: AngularFirestoreDocument<Tag>;
-	public tagsSnapshot: any;
-	public tags: Observable<Tag[]>;
-	public tag: Observable<Tag>;
 
-	public allTags = [];
+	public tags = [];
 	public edit = [];
 
 	constructor(private afs: AngularFirestore,
-		private http: Http) {}
+							private http: Http,
+							private tagService: TagService) {}
 
 	ngOnInit() {
 
-		this.getTags()
+		this.tagService.getTags().subscribe(
+			(tags) => {
+				this.tags = []
+				tags.forEach(
+					(tag) => {
+						this.tags.push(tag)
+					})
 
+			})
 
-
-		this.tagsCollection.valueChanges().subscribe(
+		this.tagService.getTags().subscribe(
 			(tags) => {
 				let i = 0;
 				tags.forEach(
@@ -53,34 +56,6 @@ export class TagsComponent implements OnInit {
 					})
 			})
 
-
-	}
-
-	getTags() {
-
-		this.tagsCollection = this.afs.collection('tags', 
-			all_tags =>
-			{
-				return all_tags.orderBy('tag-name')
-			})
-
-		this.tagsSnapshot = this.tagsCollection.snapshotChanges()
-			.map( 
-				all_tags => {
-					return all_tags.map(snap => {
-						const data = snap.payload.doc.data() as Tag;
-            const id = snap.payload.doc.id;
-            return {id, ...data };
-					})
-				});
-
-		this.tagsSnapshot.subscribe(
-			(tags) => {
-				this.allTags = []
-				tags.forEach(
-					(tag) => this.allTags.push(tag)
-					)
-			})
 
 	}
 
@@ -94,7 +69,7 @@ export class TagsComponent implements OnInit {
 
 	addTag(new_tag) {
 
-		this.tagsCollection.add({'tag-name': new_tag.value});
+		this.tagService.tagsCollection.add({'tag-name': new_tag.value});
 		new_tag.value = '';
 
 	}

@@ -26,11 +26,12 @@ import { HomeComponent } from './home/home.component';
 import { ArtComponent } from './art/art.component';
 import { TagsComponent } from './tags/tags.component';
 import { ArtItemComponent } from './art/art-item.component';
-import { ArtAddEditComponent } from './art/art-add-edit.component';
+import { ArtFormComponent } from './art/art-form.component';
 import { FooterComponent } from './footer/footer.component';
 import { NotFoundComponent } from './core/not-found/not-found.component';
 
 import { ArtService } from './art/art.service';
+import { TagService } from './tags/tags.service';
 
 import { AuthService } from './core/auth.service';
 import { AuthGuardService } from './core/auth-guard.service';
@@ -46,7 +47,7 @@ import { environment } from '../environments/environment';
     HomeComponent,
     ArtComponent,
     ArtItemComponent,
-    ArtAddEditComponent,
+    ArtFormComponent,
     TagsComponent,
     FooterComponent,
     NotFoundComponent
@@ -73,10 +74,8 @@ import { environment } from '../environments/environment';
   providers: [
     AuthService,
     AuthGuardService,
-    ArtService
-  ],
-  entryComponents: [
-    ArtAddEditComponent
+    ArtService,
+    TagService
   ],
   bootstrap: [AppComponent]
 })

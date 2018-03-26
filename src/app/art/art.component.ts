@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Response } from '@angular/http';
-import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 
 import {Observable} from 'rxjs/Observable';
 import * as firebase from 'firebase/app';
@@ -21,13 +21,17 @@ export class ArtComponent implements OnInit {
 
 	date = new Date;
 
-	public isAuthenticated;
-	public arts: Observable<{}[]>;
-	public allArts = [];
+	public isAuthenticated: boolean;
+
+	public artsCollection: AngularFirestoreCollection<Art>;
+	public artsDocument: AngularFirestoreDocument<Art>;
+	public artsSnapshot: any;
+
+	public arts = [];
+
 
 	constructor(private artService: ArtService,
-		private db: AngularFireDatabase) {
-		this.arts = db.list('/arts').valueChanges();
+				private afs: AngularFirestore,) {
 		
 	}
 
@@ -42,6 +46,30 @@ export class ArtComponent implements OnInit {
 				self.isAuthenticated = false;
 			}
 		});
+
+		this.artsCollection = this.afs.collection('arts', 
+			all_arts =>
+			{
+				return all_arts.orderBy('art-date')
+			})
+
+		this.artsSnapshot = this.artsCollection.snapshotChanges()
+			.map( 
+				all_arts => {
+					return all_arts.map(snap => {
+						const data = snap.payload.doc.data() as Art;
+            			const id = snap.payload.doc.id;
+            			return {id, ...data };
+					})
+				});
+
+		this.artsSnapshot.subscribe(
+			(tags) => {
+				this.arts = []
+				tags.forEach(
+					(tag) => this.arts.push(tag)
+					)
+			})		
 
 	}
 	
