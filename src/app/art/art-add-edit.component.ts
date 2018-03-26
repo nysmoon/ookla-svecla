@@ -69,7 +69,6 @@ export class ArtAddEditComponent implements OnInit {
 				filtered.push(artTag);
 			}
 		}
-				console.log(filtered)
 		return filtered;
 	}
 
@@ -80,11 +79,6 @@ export class ArtAddEditComponent implements OnInit {
 		this.artTagsFormArray.push(tag_control);
 		this.artTagsArray.push(tag)
 	}
-
-	// addTag(new_tag_input) {
-	// 	this.artService.addTag(new_tag_input.value);
-	// 	new_tag_input.value = '';
-	// }
 
 	cancelAddTag(new_tag_input) {
 		new_tag_input.value = '';
@@ -108,10 +102,6 @@ export class ArtAddEditComponent implements OnInit {
 
 
 		}
-	}
-
-	onTagsUpdate(event) {
-		console.log(event.target.value)
 	}
 
 	onSubmit() {

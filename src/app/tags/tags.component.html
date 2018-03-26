@@ -5,15 +5,15 @@
 				<input class="float-left" placeholder="Add New Tag" #newTagInput>
 				<button pButton type="button" icon="fa-check" class="ui-button-success float-right" (click)="addTag(newTagInput)"></button>    
 			</li>
-			<li class="list-group-item" *ngFor="let tag of tags | async; let i=index">
+			<li class="list-group-item" *ngFor="let tag of allTags; let i=index">
 				<div class="" *ngIf="!edit[i]">
-					<p class="float-left">{{ tag.tag['tag-name'] }}</p>
-					<button pButton type="button" icon="fa-trash" class="ui-button-danger float-right" (click)="onCancelEditClick(tag.key)"></button>					
-					<button pButton type="button" icon="fa-edit" class="ui-button-info float-right" (click)="onEditClick(i)"></button>    
+					<p class="float-left">{{ tag['tag-name'] }}</p>
+					<button pButton type="button" icon="fa-trash" class="ui-button-danger float-right" (click)="onCancelEditClick(tag)"></button>					
+					<button pButton type="button" icon="fa-edit" class="ui-button-info float-right" (click)="onEditClick(tag.id, i)"></button>    
 				</div>
 				<div class="" *ngIf="edit[i]">
-					<input id="edit-tag-input-{{i}}" class="float-left" value="{{ tag.tag['tag-name'] }}">
-					<button pButton type="button" icon="fa-check" class="ui-button-success float-right" (click)="editTag(tag.key, i)"></button>    
+					<input id="edit-tag-input-{{i}}" class="float-left" value="{{ tag['tag-name'] }}">
+					<button pButton type="button" icon="fa-check" class="ui-button-success float-right" (click)="editTag(tag.id, i)"></button>    
 					<button pButton type="button" icon="fa-close" class="ui-button-danger float-right" (click)="onCancelEditClick(i)"></button>					
 				</div>
 			</li>

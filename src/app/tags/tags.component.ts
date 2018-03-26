@@ -1,13 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { Http, Response, Headers, RequestOptionsArgs } from '@angular/http';
-import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 
 import {Observable} from 'rxjs/Observable';
+// import 'rxjs/add/operator/map';
+
 import * as firebase from 'firebase/app';
 
 import { environment } from '../../environments/environment';
 
 declare let $: any;
+
+interface Tag {
+	id?: any,
+	'tag-name': string;
+}
 
 @Component({
 	selector: 'os-tags',
@@ -18,18 +25,25 @@ export class TagsComponent implements OnInit {
 
 	private databaseURL = environment.firebaseConfig.databaseURL;
 
-	public tags;
-	public allTags;
+	public tagsCollection: AngularFirestoreCollection<Tag>;
+	public tagsDocument: AngularFirestoreDocument<Tag>;
+	public tagsSnapshot: any;
+	public tags: Observable<Tag[]>;
+	public tag: Observable<Tag>;
+
+	public allTags = [];
 	public edit = [];
 
-	constructor(private db: AngularFireDatabase,
+	constructor(private afs: AngularFirestore,
 		private http: Http) {}
 
 	ngOnInit() {
 
 		this.getTags()
 
-		this.tags.subscribe(
+
+
+		this.tagsCollection.valueChanges().subscribe(
 			(tags) => {
 				let i = 0;
 				tags.forEach(
@@ -43,44 +57,53 @@ export class TagsComponent implements OnInit {
 	}
 
 	getTags() {
-		this.tags = this.db.list('/art-tags').snapshotChanges().map(actions => {
-			return actions.map(a => {
-				const tag = a.payload.val();
-				const key = a.payload.key;
-				return { key, tag };
-			});
-		});
+
+		this.tagsCollection = this.afs.collection('tags', 
+			all_tags =>
+			{
+				return all_tags.orderBy('tag-name')
+			})
+
+		this.tagsSnapshot = this.tagsCollection.snapshotChanges()
+			.map( 
+				all_tags => {
+					return all_tags.map(snap => {
+						const data = snap.payload.doc.data() as Tag;
+            const id = snap.payload.doc.id;
+            return {id, ...data };
+					})
+				});
+
+		this.tagsSnapshot.subscribe(
+			(tags) => {
+				this.allTags = []
+				tags.forEach(
+					(tag) => this.allTags.push(tag)
+					)
+			})
 
 	}
 
-	onEditClick(index) {
+	onEditClick(tag, index) {
 		this.edit[index] = true;
-		console.log(this.edit)
 	}
 
 	onCancelEditClick(index) {
-		console.log(index)
 		this.edit[index] = false;
 	}
 
 	addTag(new_tag) {
 
-		firebase.auth().currentUser.getIdToken()
-		.then(
-			(token: string) => {
-				this.http.post(this.databaseURL + '/art-tags.json?auth=' + token, {'tag-name': new_tag.value})
-				.subscribe(
-					(response) => new_tag.value = '',
-					(error) => console.log(error)
-					);
-			});
+		this.tagsCollection.add({'tag-name': new_tag.value});
+		new_tag.value = '';
 
 	}
 
-	editTag(old_tag_key, tag_index) {
+	editTag(tag_id, tag_index) {
 
+		this.tagsDocument = this.afs.doc('tags/' + tag_id)
 
-		this.db.list('/art-tags/').update(old_tag_key, { 'tag-name': $('#edit-tag-input-' + tag_index).val() })
+		this.tagsDocument.update({ 'tag-name': $('#edit-tag-input-' + tag_index).val() })
 
 		this.edit[tag_index] = false;
 
