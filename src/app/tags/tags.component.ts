@@ -31,32 +31,24 @@ export class TagsComponent implements OnInit {
 	public edit = [];
 
 	constructor(private afs: AngularFirestore,
-							private http: Http,
-							private tagService: TagService) {}
+		private http: Http,
+		private tagService: TagService) {}
 
 	ngOnInit() {
 
 		this.tagService.getTags().subscribe(
 			(tags) => {
 				this.tags = []
-				tags.forEach(
-					(tag) => {
-						this.tags.push(tag)
-					})
-
-			})
-
-		this.tagService.getTags().subscribe(
-			(tags) => {
 				let i = 0;
 				tags.forEach(
 					(tag) => {
+						this.tags.push(tag);
 						this.edit[i] = false;
 						i++;
+
 					})
+
 			})
-
-
 	}
 
 	onEditClick(tag, index) {

@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { Http, Response, Headers, RequestOptionsArgs } from '@angular/http';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 
 import * as firebase from 'firebase/app';
 
@@ -8,39 +9,41 @@ import 'rxjs/Rx';
 
 import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
+import { Art } from './art.model';
 
 declare var $: any;
 
 @Injectable()
 export class ArtService {
 
-	public arts = [];
-	public allArts = [];
-	private database = firebase.database();
-	private databaseURL = environment.firebaseConfig.databaseURL
+	public artsCollection: AngularFirestoreCollection<Art>;
+	public artsDocument: AngularFirestoreDocument<Art>;
+	public artsSnapshot: any;
 
 
-	constructor(private http: Http,
-		private authService: AuthService,
-		private db: AngularFireDatabase) {
+	constructor(private afs: AngularFirestore,
+		private http: Http) {
+		this.artsCollection = this.afs.collection('arts', 
+			all_arts =>
+			{
+				return all_arts.orderBy('art-date')
+			})
 	}
 
 	getArts() {
+		return this.artsCollection.snapshotChanges()
+		.map( 
+			all_arts => {
+				return all_arts.map(snap => {
+					const data = snap.payload.doc.data() as Art;
+					const id = snap.payload.doc.id;
+					return {id, ...data };
+				})
+			});
 	}
 
 	addArt(art: any) {
 
-		let newArt = JSON.stringify(art);
-
-		firebase.auth().currentUser.getIdToken()
-		.then(
-			(token: string) => {
-				this.http.post(this.databaseURL + '/arts.json?auth=' + token, newArt)
-				.subscribe(
-					(response) => console.log(response),
-					(error) => console.log(error)
-					);
-			});
 
 	}
 

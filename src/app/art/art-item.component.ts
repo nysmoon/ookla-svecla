@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 import { ArtFormComponent } from './art-form.component'
-
+import { TagService } from '../tags/tags.service';
 
 import { Art } from './art.model';
 
@@ -15,10 +15,23 @@ export class ArtItemComponent implements OnInit {
 
 	@Input() art: Art;
 
-	constructor(private modalService: NgbModal) {
+	public tags: any;
+	public art_tag_names: any;
+
+	constructor(private modalService: NgbModal, private tagService: TagService) {
 	}
 
 	ngOnInit() {
+		this.tagService.getTags().subscribe(
+			(tags) => {
+				this.tags = []
+				tags.forEach(
+					(tag) => {
+						this.tags.push(tag);
+
+					})
+
+			})
 	}
 
 	editArt(art) {

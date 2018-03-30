@@ -47,27 +47,11 @@ export class ArtComponent implements OnInit {
 			}
 		});
 
-		this.artsCollection = this.afs.collection('arts', 
-			all_arts =>
-			{
-				return all_arts.orderBy('art-date')
-			})
-
-		this.artsSnapshot = this.artsCollection.snapshotChanges()
-			.map( 
-				all_arts => {
-					return all_arts.map(snap => {
-						const data = snap.payload.doc.data() as Art;
-            			const id = snap.payload.doc.id;
-            			return {id, ...data };
-					})
-				});
-
-		this.artsSnapshot.subscribe(
-			(tags) => {
+		this.artService.getArts().subscribe(
+			(arts) => {
 				this.arts = []
-				tags.forEach(
-					(tag) => this.arts.push(tag)
+				arts.forEach(
+					(art) => this.arts.push(art)
 					)
 			})		
 

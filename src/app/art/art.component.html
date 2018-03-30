@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let art of arts | async">
+	<div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let art of arts">
  		<os-art-item [art]="art"></os-art-item>
 	</div>
 </div>
@@ -7,6 +7,6 @@
 <!-- Add new art item -->
 <div class="row" *ngIf="isAuthenticated">
 	<div class="col-12">
-		<button class="btn btn-info pull-right" [routerLink]="['/art-add-edit']">Add New Art</button>
+		<button class="btn btn-info pull-right" [routerLink]="['/art-form']">Add New Art</button>
 	</div>
 </div>
