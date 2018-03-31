@@ -30,6 +30,9 @@ const osRoutes: Routes = [
 		path: 'art-form',
 		component: ArtFormComponent
 	}, {
+		path: 'art-form/:id',
+		component: ArtFormComponent
+	}, {
 		path: 'tags',
 		component: TagsComponent
 	}, {

@@ -42,11 +42,9 @@ export class ArtService {
 			});
 	}
 
-	addArt(art: any) {
-
-
+	getArtById(art_id) {
+		return this.afs.doc('arts/' + art_id)
 	}
-
 
 
 }

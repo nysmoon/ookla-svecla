@@ -17,7 +17,7 @@
 	</div>
 	<!-- Card footer -->
 	<div class="card-data">
-		<a (click)="editArt(art.id)">Edit Art</a>
+		<a [routerLink]="['/art-form', art['id']]">Edit Art</a>
 	</div>
 	<!-- Card footer -->
 </div>
