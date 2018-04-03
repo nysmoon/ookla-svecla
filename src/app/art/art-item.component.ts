@@ -22,16 +22,17 @@ export class ArtItemComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.tagService.getTags().subscribe(
+
+		let art_tags = this.tagService.getTagsByArt(this.art['id']).subscribe(
 			(tags) => {
 				this.tags = []
 				tags.forEach(
 					(tag) => {
 						this.tags.push(tag);
-
 					})
 
 			})
+
 	}
 
 	editArt(art) {

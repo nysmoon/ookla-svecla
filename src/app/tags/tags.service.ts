@@ -49,21 +49,18 @@ export class TagService {
 			});
 	}
 
-	getTagsByIds(tags: string[]) {
+	getTagsByArt(art_id: string[]) {
 
-		// return this.afs.collection('tags', 
-		// 	all_tags =>
-		// 	{
-		// 		return all_tags.where().orderBy('tag-name')
-		// 	}).snapshotChanges()
-		// .map( 
-		// 	all_tags => {
-		// 		return all_tags.map(snap => {
-		// 			const data = snap.payload.doc.data() as Tag;
-		// 			const id = snap.payload.doc.id;
-		// 			return {id, ...data };
-		// 		})
-		// 	});
+		return this.afs.collection('tags', all_tags => all_tags.where('arts.' + art_id, '==', true)).snapshotChanges()
+		.map( 
+			all_tags => {
+				return all_tags.map(snap => {
+					const data = snap.payload.doc.data() as Tag;
+					const id = snap.payload.doc.id;
+					return {id, ...data };
+				})
+			});
+
 	}
 
 }

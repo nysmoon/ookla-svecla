@@ -20,17 +20,21 @@ export class ArtService {
 	public artsDocument: AngularFirestoreDocument<Art>;
 	public artsSnapshot: any;
 
+	public artsByTag: any;
+
 
 	constructor(private afs: AngularFirestore,
 		private http: Http) {
+	}
+
+	getArts() {
+
 		this.artsCollection = this.afs.collection('arts', 
 			all_arts =>
 			{
 				return all_arts.orderBy('art-date')
-			})
-	}
+			});
 
-	getArts() {
 		return this.artsCollection.snapshotChanges()
 		.map( 
 			all_arts => {
@@ -46,5 +50,24 @@ export class ArtService {
 		return this.afs.doc('arts/' + art_id)
 	}
 
+	getArtByTag(tag_id) {
+		this.artsCollection = this.afs.collection('arts', 
+			all_arts =>
+			{
+				return all_arts.orderBy('art-date').where('tags.' + tag_id, '==', true)
+			});
+
+		return this.artsCollection.snapshotChanges()
+		.map( 
+			all_arts => {
+				return all_arts.map(snap => {
+					const data = snap.payload.doc.data() as Art;
+					const id = snap.payload.doc.id;
+					return {id, ...data };
+				})
+			});
+
+
+	}
 
 }

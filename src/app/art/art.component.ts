@@ -8,6 +8,7 @@ import * as firebase from 'firebase/app';
 import { Art } from './art.model';
 
 import { ArtService } from './art.service';
+import { TagService } from '../tags/tags.service';
 
 
 @Component({
@@ -28,10 +29,12 @@ export class ArtComponent implements OnInit {
 	public artsSnapshot: any;
 
 	public arts = [];
+	public tags = [];
 
 
 	constructor(private artService: ArtService,
-				private afs: AngularFirestore,) {
+				private tagService: TagService,
+				private afs: AngularFirestore) {
 		
 	}
 
@@ -53,8 +56,24 @@ export class ArtComponent implements OnInit {
 				arts.forEach(
 					(art) => this.arts.push(art)
 					)
-			})		
+			})	
 
+		this.tagService.getTags().subscribe(
+			(tags) => {
+				this.tags = tags
+			})		
+	}
+
+	showArtByTag(tag) {
+		console.log(tag.id)
+		this.artService.getArtByTag(tag.id).subscribe(
+			(arts) => {
+				console.log(arts)
+				this.arts = []
+				arts.forEach(
+					(art) => this.arts.push(art)
+					)
+			})	
 	}
 	
 }
