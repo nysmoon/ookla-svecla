@@ -50,6 +50,22 @@ export class ArtComponent implements OnInit {
 			}
 		});
 
+		this.showAll();
+
+	
+	}
+
+	showArtByTag(tag) {
+
+		this.arts = [];
+
+		this.arts = this.artService.getArtByTag(tag['id'])
+		console.log(this.arts)
+
+
+	}
+
+	showAll() {
 		this.artService.getArts().subscribe(
 			(arts) => {
 				this.arts = []
@@ -61,19 +77,7 @@ export class ArtComponent implements OnInit {
 		this.tagService.getTags().subscribe(
 			(tags) => {
 				this.tags = tags
-			})		
-	}
-
-	showArtByTag(tag) {
-		console.log(tag.id)
-		this.artService.getArtByTag(tag.id).subscribe(
-			(arts) => {
-				console.log(arts)
-				this.arts = []
-				arts.forEach(
-					(art) => this.arts.push(art)
-					)
-			})	
+			})			
 	}
 	
 }

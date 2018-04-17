@@ -1,6 +1,7 @@
 <div class="row">
 	<div class="col-12 text-center">
 		<a class="badge art-tag" *ngFor="let tag of tags" (click)="showArtByTag(tag)">{{ tag['tag-name'] }}</a>
+		<a class="badge clear-tags" (click)="showAll()">Show all</a>
 	</div>
 </div>
 <div class="row">

@@ -17,6 +17,7 @@ declare var $: any;
 export class ArtService {
 
 	public artsCollection: AngularFirestoreCollection<Art>;
+	public artTagCollection: AngularFirestoreCollection<Art>;
 	public artsDocument: AngularFirestoreDocument<Art>;
 	public artsSnapshot: any;
 
@@ -25,15 +26,16 @@ export class ArtService {
 
 	constructor(private afs: AngularFirestore,
 		private http: Http) {
-	}
-
-	getArts() {
-
 		this.artsCollection = this.afs.collection('arts', 
+
 			all_arts =>
 			{
 				return all_arts.orderBy('art-date')
 			});
+
+	}
+
+	getArts() {
 
 		return this.artsCollection.snapshotChanges()
 		.map( 
@@ -50,23 +52,40 @@ export class ArtService {
 		return this.afs.doc('arts/' + art_id)
 	}
 
-	getArtByTag(tag_id) {
-		this.artsCollection = this.afs.collection('arts', 
-			all_arts =>
+	getArtByTag(tag) {
+
+		let ids: any;
+		let art_ids: string[] = [];
+		let tag_ids: string[] = [];
+		let arts: any = [];
+
+		this.artTagCollection = this.afs.collection('art-tag',
+			all_tags =>
 			{
-				return all_arts.orderBy('art-date').where('tags.' + tag_id, '==', true)
-			});
+				return all_tags.where('tag-id', '==', tag)
+			})
 
-		return this.artsCollection.snapshotChanges()
-		.map( 
-			all_arts => {
-				return all_arts.map(snap => {
-					const data = snap.payload.doc.data() as Art;
-					const id = snap.payload.doc.id;
-					return {id, ...data };
-				})
-			});
 
+		this.artTagCollection.snapshotChanges().subscribe(
+			(art_tags) => {
+
+				return art_tags.map(
+
+					(art_tag) => {
+
+						ids = art_tag.payload.doc.data()
+
+						this.afs.doc('arts/' + ids['art-id']).snapshotChanges().subscribe((art) => {
+							const data = art.payload.data() as Art;
+							const id = art.payload.id;
+							arts.push({id, ...data})
+						})
+
+					})
+
+			})
+
+		return arts;
 
 	}
 

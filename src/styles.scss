@@ -377,9 +377,8 @@ Home page styles
 Arts page styles
 ------------------------------------------------------- */
 
-a.art-tag {
+a.art-tag, a.clear-tags {
 	font-size: 1rem;
-	color: #fff !important;
 }
 
 .card {
@@ -446,8 +445,14 @@ input[type=file] {
 } 
 
 .art-tag {
-	color: #ffffff;
+	color: #ffffff !important;
 	background-color: #929FBA;
+	margin: 0 5px;
+}
+
+.clear-tags {
+	color: #8c8c8c !important;
+	background-color: #f2f2f2;
 	margin: 0 5px;
 }
 

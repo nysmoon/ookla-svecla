@@ -17,7 +17,6 @@ export class ArtFormComponent implements OnInit {
 	public art_id: string;
 
 	public artForm: FormGroup;
-	public artTagsFormArray: FormArray;
 	public artTagsArray: number[] = [];
 
 	public image_url;
@@ -25,6 +24,7 @@ export class ArtFormComponent implements OnInit {
 	private artFileStorage; 
 
 	public artTags = [];
+	public artTagsIdArray: Object[] = [];
 
 	artTagsSuggestions: any[];
 
@@ -39,14 +39,13 @@ export class ArtFormComponent implements OnInit {
 
 	ngOnInit() {
 
-		this.artTagsFormArray = this.formBuilder.array([]);
+		// this.artTagsFormArray = this.formBuilder.array([]);
 
 		this.artForm = this.formBuilder.group({
 			'art-name': ['', Validators.required],
 			'art-description': ['', Validators.required],
 			'art-date': ['', Validators.required],
-			'art-file': ['', Validators.required],
-			'tags': this.artTagsFormArray
+			'art-file': ['', Validators.required]
 		});
 
 		if (this.art_id) {
@@ -64,7 +63,8 @@ export class ArtFormComponent implements OnInit {
 
 					this.image_url = art['art-file'];
 
-					this.artTags = art['tags']
+					// this.artTags = art['tags']
+					// console.log(this.artTags)
 
 				})
 		}
@@ -120,13 +120,6 @@ export class ArtFormComponent implements OnInit {
 
 		onSubmit() {
 
-			this.artTags.forEach(
-				(tag) => {
-					let tag_control = this.formBuilder.control(tag)
-
-					this.artTagsFormArray.push(tag_control);
-
-				})
 
 			if (this.art_url) {	
 
@@ -156,6 +149,8 @@ export class ArtFormComponent implements OnInit {
 							})
 					})
 			} else {
+
+
 
 				this.artService.getArtById(this.art_id).update(this.artForm.value)
 
