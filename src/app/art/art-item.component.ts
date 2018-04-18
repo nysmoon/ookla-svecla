@@ -15,7 +15,7 @@ export class ArtItemComponent implements OnInit {
 
 	@Input() art: Art;
 
-	public tags: any;
+	public tags: Object[] = [];
 	public art_tag_names: any;
 
 	constructor(private modalService: NgbModal, private tagService: TagService) {
@@ -23,14 +23,14 @@ export class ArtItemComponent implements OnInit {
 
 	ngOnInit() {
 
-		this.tagService.getTagsByArt(this.art['id']).subscribe(
-			(tags) => {
-				this.tags = []
-				tags.forEach(
-					(tag) => {
-						this.tags.push(tag);
-					})
+		this.tagService.getTagsByArt(this.art['id']).subscribe(art_tags => {
+			art_tags.map(art_tag => {
+				this.tagService.getTagById(art_tag['tag-id']).subscribe(tag => {
+					this.tags.push(tag)
+				})
+
 			})
+		})
 
 	}
 

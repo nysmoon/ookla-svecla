@@ -38,29 +38,30 @@ export class TagService {
 
 	getTags() {
 
-		return this.tagsCollection.snapshotChanges()
-		.map( 
-			all_tags => {
-				return all_tags.map(snap => {
-					const data = snap.payload.doc.data() as Tag;
-					const id = snap.payload.doc.id;
-					return {id, ...data };
-				})
-			});
+		return this.tagsCollection.snapshotChanges().map(all_tags => {
+			return all_tags.map(snap => {
+				const data = snap.payload.doc.data() as Tag;
+				const id = snap.payload.doc.id;
+				return {id, ...data };
+			})
+		});
+
+	}
+
+	getTagById(tag_id) {
+
+		return this.afs.doc('tags/' + tag_id).snapshotChanges().map(tag => {
+			const data = tag.payload.data();
+			const id = tag.payload.id;
+			return {id, ...data}
+
+		})
+
 	}
 
 	getTagsByArt(art_id: string[]) {
 
-		return this.afs.collection('tags', all_tags => all_tags.where('arts.' + art_id, '==', true)).snapshotChanges()
-		.map( 
-			all_tags => {
-				return all_tags.map(snap => {
-					const data = snap.payload.doc.data() as Tag;
-					const id = snap.payload.doc.id;
-					return {id, ...data };
-				})
-			});
-
+		return this.afs.collection('art-tag', all_values => all_values.where('art-id', '==', art_id)).valueChanges();
 	}
 
 }

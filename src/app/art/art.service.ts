@@ -16,6 +16,8 @@ declare var $: any;
 @Injectable()
 export class ArtService {
 
+	private db = firebase.firestore();
+
 	public artsCollection: AngularFirestoreCollection<Art>;
 	public artTagCollection: AngularFirestoreCollection<Art>;
 	public artsDocument: AngularFirestoreDocument<Art>;
@@ -26,6 +28,7 @@ export class ArtService {
 
 	constructor(private afs: AngularFirestore,
 		private http: Http) {
+
 		this.artsCollection = this.afs.collection('arts', 
 
 			all_arts =>
@@ -55,8 +58,6 @@ export class ArtService {
 	getArtByTag(tag) {
 
 		let ids: any;
-		let art_ids: string[] = [];
-		let tag_ids: string[] = [];
 		let arts: any = [];
 
 		this.artTagCollection = this.afs.collection('art-tag',
@@ -87,6 +88,25 @@ export class ArtService {
 
 		return arts;
 
+	}
+
+	addArt(art_form, art_tags: Object[]) {
+
+		let newArtRef = this.db.collection('arts').doc();
+		let new_art_id = newArtRef['id'];
+		console.log(new_art_id)
+
+		console.log(art_tags)
+
+		art_tags.map(
+			(tag) => {
+				console.log(tag)
+
+				this.db.collection('art-tag').add({'art-id': new_art_id, 'tag-id': tag['id']})
+
+			})
+
+		newArtRef.set(art_form)
 	}
 
 }

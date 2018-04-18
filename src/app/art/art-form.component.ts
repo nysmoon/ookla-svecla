@@ -17,14 +17,13 @@ export class ArtFormComponent implements OnInit {
 	public art_id: string;
 
 	public artForm: FormGroup;
-	public artTagsArray: number[] = [];
 
 	public image_url;
 	private art_url;
 	private artFileStorage; 
 
 	public artTags = [];
-	public artTagsIdArray: Object[] = [];
+	public artTagsArray: Object[] = [];
 
 	artTagsSuggestions: any[];
 
@@ -38,8 +37,6 @@ export class ArtFormComponent implements OnInit {
 	}
 
 	ngOnInit() {
-
-		// this.artTagsFormArray = this.formBuilder.array([]);
 
 		this.artForm = this.formBuilder.group({
 			'art-name': ['', Validators.required],
@@ -63,9 +60,6 @@ export class ArtFormComponent implements OnInit {
 
 					this.image_url = art['art-file'];
 
-					// this.artTags = art['tags']
-					// console.log(this.artTags)
-
 				})
 		}
 
@@ -77,7 +71,6 @@ export class ArtFormComponent implements OnInit {
 
 		this.tagService.getTags().subscribe(
 			(tags) => {
-				console.log(tags)
 				this.artTagsSuggestions = this.filterArtTags(query, tags);
 			})
 	}
@@ -86,85 +79,90 @@ export class ArtFormComponent implements OnInit {
 		let filtered : any[] = [];
 		for(let i = 0; i < artTags.length; i++) {
 			let artTag = artTags[i];
-			// if(artTag['tag-name'].toLowerCase().indexOf(query.toLowerCase()) == 0 && this.artTagsArray.indexOf(artTag.id) == -1) {
-				if(artTag['tag-name'].toLowerCase().indexOf(query.toLowerCase()) == 0) {
-					filtered.push(artTag);
-				}
-			}
-			return filtered;
-		}
-
-		cancelAddTag(new_tag_input) {
-			new_tag_input.value = '';
-		}
-
-
-		onFileUpload(event) {
-
-			if(event.target.files && event.target.files.length > 0) {
-
-				this.art_url = event.target.files[0];
-
-				var reader = new FileReader();
-
-				reader.onload = (event:any) => {
-					this.image_url = event.target.result;
-				}
-
-				reader.readAsDataURL(event.target.files[0]);
-
-
-
+			if(artTag['tag-name'].toLowerCase().indexOf(query.toLowerCase()) == 0 && this.artTagsArray.indexOf(artTag.id) == -1) {
+				filtered.push(artTag);
 			}
 		}
+		return filtered;
+	}
 
-		onSubmit() {
-
-
-			if (this.art_url) {	
-
-				this.artFileStorage = firebase.storage().ref('arts/' + this.art_url.name);
-				this.artFileStorage.put(this.art_url).on('state_changed',
-					(snapshot) => {
-					},
-					(error) => {
-						console.log(error)
-					},
-					() => {
-						this.artFileStorage.getDownloadURL().then(
-							(url) => {
-
-								this.artForm.get('art-file').setValue(url);
-
-								if (this.art_id) {
-
-									this.artService.getArtById(this.art_id).update(this.artForm.value)
-
-								} else {
-									this.artService.artsCollection.add(this.artForm.value)
-
-								}
-
-
-							})
-					})
-			} else {
-
-
-
-				this.artService.getArtById(this.art_id).update(this.artForm.value)
-
-			}
-
-
-
-			this.image_url = '';
-			this.router.navigate(['/art'])
-
-		}
-
-		showForm() {
-			console.log(this.artForm.value)
-		}
+	onTagSelect(tag) {
+		console.log(this.artTags)
+		this.artTagsArray.push(tag)
 
 	}
+
+	onTagUnselect(unselected_tag) {
+		console.log(unselected_tag)
+		this.artTagsArray.filter(
+			(tag) => {
+				return tag['id'] !== unselected_tag['id']
+			})
+	}
+
+
+	onFileUpload(event) {
+
+		if(event.target.files && event.target.files.length > 0) {
+
+			this.art_url = event.target.files[0];
+
+			var reader = new FileReader();
+
+			reader.onload = (event:any) => {
+				this.image_url = event.target.result;
+			}
+
+			reader.readAsDataURL(event.target.files[0]);
+
+
+
+		}
+	}
+
+	onSubmit() {
+
+		if (this.art_url) {	
+
+			this.artFileStorage = firebase.storage().ref('arts/' + this.art_url.name);
+			this.artFileStorage.put(this.art_url).on('state_changed',
+				(snapshot) => {
+				},
+				(error) => {
+					console.log(error)
+				},
+				() => {
+					this.artFileStorage.getDownloadURL().then(
+						(url) => {
+
+							this.artForm.get('art-file').setValue(url);
+
+							if (this.art_id) {
+
+								this.artService.getArtById(this.art_id).update(this.artForm.value)
+
+							} else {
+								console.log(this.artTags)
+								this.artService.addArt(this.artForm.value, this.artTags)
+
+							}
+
+
+						})
+				})
+		} else {
+
+			this.artService.getArtById(this.art_id).update(this.artForm.value)
+
+		}
+
+		this.image_url = '';
+		this.router.navigate(['/art'])
+
+	}
+
+	showForm() {
+		console.log(this.artForm.value)
+	}
+
+}
