@@ -1,10 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 import { ArtFormComponent } from './art-form.component'
 import { TagService } from '../tags/tags.service';
 
 import { Art } from './art.model';
+
+import { Subscription } from "rxjs/Subscription";
 
 @Component({
 	selector: 'os-art-item',
@@ -15,28 +17,23 @@ export class ArtItemComponent implements OnInit {
 
 	@Input() art: Art;
 
-	public tags: Object[] = [];
+	public tags: Object[];
 	public art_tag_names: any;
+
+	private subscriptions = new Subscription();
 
 	constructor(private modalService: NgbModal, private tagService: TagService) {
 	}
 
 	ngOnInit() {
 
-		this.tagService.getTagsByArt(this.art['id']).subscribe(art_tags => {
-			art_tags.map(art_tag => {
-				this.tagService.getTagById(art_tag['tag-id']).subscribe(tag => {
-					this.tags.push(tag)
-				})
-
-			})
-		})
+		
+		this.tags = this.tagService.getTagsByArt(this.art['id']);
 
 	}
 
-	editArt(art) {
-		// const modalRef = this.modalService.open(ArtAddEditComponent);
-		// modalRef.componentInstance.art = art;
-	}
+	ngOnDestroy() {
+		this.subscriptions.unsubscribe()
+	}	
 
 }

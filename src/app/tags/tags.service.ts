@@ -19,6 +19,8 @@ interface Tag {
 @Injectable()
 export class TagService {
 
+	private db = firebase.firestore();
+
 	public tagsCollection: AngularFirestoreCollection<Tag>;
 	public tagsDocument: AngularFirestoreDocument<Tag>;
 	public tagsSnapshot: any;
@@ -59,9 +61,25 @@ export class TagService {
 
 	}
 
-	getTagsByArt(art_id: string[]) {
+	getTagsByArt(art_id: string) {
 
-		return this.afs.collection('art-tag', all_values => all_values.where('art-id', '==', art_id)).valueChanges();
+		const self = this;
+
+		let tags_by_art: Object[] = [];
+
+		this.db.collection('art-tag').where('art-id', '==', art_id).onSnapshot((snapshot) => {
+			snapshot.docChanges.forEach((change) => {
+				let tag_id = change.doc.data()['tag-id']
+				self.db.collection('tags').doc(tag_id).onSnapshot(snapshot => {
+
+					tags_by_art.push({tag_id, ...snapshot.data()});
+
+				})
+			});
+		})
+
+		return tags_by_art;
+
 	}
 
 }

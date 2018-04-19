@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router'; 
 import * as firebase from 'firebase/app';
@@ -6,6 +6,8 @@ import * as firebase from 'firebase/app';
 
 import { ArtService } from './art.service'
 import { TagService } from '../tags/tags.service'
+
+import { ISubscription } from "rxjs/Subscription";
 
 @Component({
 	selector: 'os-art-form',
@@ -22,8 +24,12 @@ export class ArtFormComponent implements OnInit {
 	private art_url;
 	private artFileStorage; 
 
+	private tagsByArt: string[] = [];
 	public artTags = [];
-	public artTagsArray: Object[] = [];
+	public artTagsSelected: Object[] = [];
+
+	private artTagsToRemove: Object[];
+	private subscriptions: ISubscription[] = [];
 
 	artTagsSuggestions: any[];
 
@@ -37,6 +43,12 @@ export class ArtFormComponent implements OnInit {
 	}
 
 	ngOnInit() {
+
+		this.subscriptions.map(subscription => {
+			subscription.unsubscribe()
+		})
+
+		this.artTagsToRemove = [];
 
 		this.artForm = this.formBuilder.group({
 			'art-name': ['', Validators.required],
@@ -60,44 +72,53 @@ export class ArtFormComponent implements OnInit {
 
 					this.image_url = art['art-file'];
 
+					
 				})
+
+			this.artTags = this.tagService.getTagsByArt(this.art_id);
+
+			this.tagsByArt.map(tag_by_art => {
+				this.tagService.getTagById(tag_by_art).map(tag => {
+					this.artTags.push(tag)
+					console.log(tag)
+				})
+
+			})
 		}
-
 	}
-
 	suggestArtTags(event) {
 
 		let query = event.query;
 
-		this.tagService.getTags().subscribe(
+		this.subscriptions.push(this.tagService.getTags().subscribe(
 			(tags) => {
 				this.artTagsSuggestions = this.filterArtTags(query, tags);
-			})
+			}))
 	}
 
 	filterArtTags(query, artTags: any[]):any[] {
 		let filtered : any[] = [];
 		for(let i = 0; i < artTags.length; i++) {
 			let artTag = artTags[i];
-			if(artTag['tag-name'].toLowerCase().indexOf(query.toLowerCase()) == 0 && this.artTagsArray.indexOf(artTag.id) == -1) {
+			if(artTag['tag-name'].toLowerCase().indexOf(query.toLowerCase()) == 0 && this.artTagsSelected.indexOf(artTag.id) == -1) {
 				filtered.push(artTag);
 			}
 		}
 		return filtered;
 	}
 
-	onTagSelect(tag) {
-		console.log(this.artTags)
-		this.artTagsArray.push(tag)
+	onTagSelect(selected_tag) {
+		this.artTagsSelected.push(selected_tag)
 
 	}
 
 	onTagUnselect(unselected_tag) {
-		console.log(unselected_tag)
-		this.artTagsArray.filter(
+		this.artTagsSelected.filter(
 			(tag) => {
 				return tag['id'] !== unselected_tag['id']
 			})
+
+		this.artTagsToRemove.push(unselected_tag)
 	}
 
 
@@ -139,21 +160,22 @@ export class ArtFormComponent implements OnInit {
 
 							if (this.art_id) {
 
-								this.artService.getArtById(this.art_id).update(this.artForm.value)
+								this.updateArt()
 
 							} else {
-								console.log(this.artTags)
+
 								this.artService.addArt(this.artForm.value, this.artTags)
+								this.onClose()
 
 							}
 
 
 						})
 				})
+
 		} else {
 
-			this.artService.getArtById(this.art_id).update(this.artForm.value)
-
+			this.updateArt()
 		}
 
 		this.image_url = '';
@@ -161,8 +183,39 @@ export class ArtFormComponent implements OnInit {
 
 	}
 
+	updateArt() {
+
+		this.artTagsToRemove.map(tag => {
+			this.artService.removeTag(this.art_id, tag['tag_id'])
+
+		})
+
+		this.artService.addArtTag(this.art_id, this.artTagsSelected)
+
+		this.artService.getArtById(this.art_id).update(this.artForm.value)
+
+		this.onClose()
+
+	}
+
 	showForm() {
 		console.log(this.artForm.value)
+	}
+
+	onClose() {
+		this.artTagsSelected = [];
+		this.artTagsToRemove = [];
+		this.artTags = [];
+		this.subscriptions.map(subscription => {
+			subscription.unsubscribe()
+		})
+	}
+
+	ngOnDestroy() {
+
+		this.subscriptions.map(subscription => {
+			subscription.unsubscribe()
+		})
 	}
 
 }

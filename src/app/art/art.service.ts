@@ -94,19 +94,58 @@ export class ArtService {
 
 		let newArtRef = this.db.collection('arts').doc();
 		let new_art_id = newArtRef['id'];
-		console.log(new_art_id)
 
-		console.log(art_tags)
+		newArtRef.set(art_form)
+
+		this.addArtTag(new_art_id, art_tags)
+	}
+
+	addArtTag(art_id, art_tags: Object[]) {
+
 
 		art_tags.map(
 			(tag) => {
-				console.log(tag)
 
-				this.db.collection('art-tag').add({'art-id': new_art_id, 'tag-id': tag['id']})
+				let artTagCollection = this.afs.collection('art-tag',
+					all_tags =>
+					{
+						return all_tags.where('tag-id', '==', tag['id']).where('art-id', '==', art_id)
+					})
+
+					artTagCollection.valueChanges().subscribe(value => {
+						if(value.length === 0) {
+							this.db.collection('art-tag').add({'art-id': art_id, 'tag-id': tag['id']})
+
+						}
+					})
 
 			})
 
-		newArtRef.set(art_form)
+	}
+
+	removeTag(art_id, tag_id) {
+
+		this.artTagCollection = this.afs.collection('art-tag',
+			all_tags =>
+			{
+				return all_tags.where('tag-id', '==', tag_id).where('art-id', '==', art_id)
+			})
+
+		this.artTagCollection.snapshotChanges().subscribe(
+			(art_tags) => {
+
+				return art_tags.map(
+
+					(art_tag) => {
+
+						let art_tag_id = art_tag.payload.doc.id
+						this.afs.doc('art-tag/' + art_tag_id).delete()
+
+					})
+
+			})
+
+
 	}
 
 }
