@@ -78,7 +78,7 @@ h1 {
 
 h2 {	
 	font-family: 'Oxygen', sans-serif;	
-	font-size: 1em;
+	font-size: 2em;
 	font-weight: 400;
 	color: #898989;
 	margin-top: 40px;
@@ -319,6 +319,21 @@ Form amd Buttons styles
 	color: #4f4d47;
 	background-color: transparent;
 	border-color: #4f4d47;	
+}
+
+.required:after { 
+	color:red;
+	content:" *"; 
+}
+
+.error-message {
+	color: red;
+	text-decoration: italic;
+	margin-bottom: 15px;
+}
+
+button:disabled {
+	cursor: not-allowed;
 }
 
 /* ----------------------------------------------------

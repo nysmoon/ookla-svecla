@@ -2,35 +2,40 @@
 	<div class="col-8">
 		<form [formGroup]="artForm" (ngSubmit)="onSubmit()">
 			<div class="form-group">
-				<h4 for="art-name">Art Form</h4>
+				<h2>Art Form</h2>
 			</div>
 			<div class="form-group">
-				<label for="art-file">Upload Art File</label>
-				<input id="art-upload" class="form-control" type="file" name="art-file" (change)="onFileUpload($event)">
+				<label for="art-file" class="required">Upload Art File</label>
+				<input id="art-upload" class="form-control" type="file" name="art-file" formControlName="art-file" (change)="onFileUpload($event)">
 				<img *ngIf="image_url" [src]="image_url" />
+				<div class="error-message" *ngIf="!image_url && artForm.get('art-file').touched">Please upload an image of your art.</div>
 			</div>
+
 			<div class="form-group">
-				<label for="art-name">Art Name</label>
+				<label for="art-name" class="required">Art Name</label>
 				<input class="form-control" type="text" name="art-name" id="art-name" formControlName="art-name">
+				<div class="error-message" *ngIf="!artForm.get('art-name').valid && artForm.get('art-name').touched">Please add a name of your art.</div>
 			</div>
 
 			<div class="form-group">
-				<label for="art-description">Art Description</label>
+				<label for="art-description" class="required">Art Description</label>
 				<input class="form-control" type="text" name="art-description" id="art-description" formControlName="art-description">
+				<div class="error-message" *ngIf="!artForm.get('art-description').valid && artForm.get('art-description').touched">Please add a description of your art.</div>
 			</div>
 
 			<div class="form-group">
-				<label for="art-date">Date of Creation</label>
+				<label for="art-date" class="required">Date of Creation</label>
 				<mat-form-field>
 					<input matInput [matDatepicker]="myDatepicker" formControlName="art-date">
 					<mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
 					<mat-datepicker #myDatepicker></mat-datepicker>
 				</mat-form-field>
+				<div class="error-message" *ngIf="!artForm.get('art-date').valid && artForm.get('art-date').touched">Please add a date of creation of your art.</div>
 			</div>
 
 			<div class="form-group row">
 				<div class="col-12">
-					<label for="art-file">Select Tags</label>
+					<label for="art-tags">Select Tags</label>
 					<span class="ui-fluid">
 						<p-autoComplete [(ngModel)]="artTags" [ngModelOptions]="{standalone: true}" [suggestions]="artTagsSuggestions" (completeMethod)="suggestArtTags($event)" (onSelect)="onTagSelect($event)" (onUnselect)="onTagUnselect($event)" styleClass="wid100"
 						[minLength]="1" placeholder="Art Tags" field="tag-name" [multiple]="true">
@@ -39,10 +44,10 @@
 			</div>
 		</div>
 		<div class="form-group text-center">
-			<button pButton type="submit" label="Submit"></button>
+			<button type="submit" [disabled]="!image_url && !artForm.valid">Submit</button>
 		</div>
 	</form>
-		<button pButton type="button" label="Submit" (click)="showForm()"></button>
+<!-- 		<button pButton type="button" label="Submit" (click)="showForm()"></button> -->
 
 </div>
 </div>
